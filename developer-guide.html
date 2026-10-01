@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Developer Integration Guide & API Blog — OmniStore CMS</title>
+  <meta name="description" content="Complete developer guide for integrating OmniStore CMS REST APIs, Webhooks, HMAC signature verification, custom script injections, and RBAC permissions.">
+  <link rel="stylesheet" href="index.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+  <style>
+    .blog-container {
+      max-width: 960px;
+      margin: 40px auto 100px auto;
+      padding: 0 24px;
+    }
+    .blog-header {
+      margin-bottom: 48px;
+      padding-bottom: 32px;
+      border-bottom: 2px solid var(--border);
+    }
+    .blog-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.4rem, 5vw, 4rem);
+      font-weight: 800;
+      line-height: 0.95;
+      color: var(--fg);
+      text-transform: uppercase;
+      letter-spacing: -0.04em;
+      margin: 16px 0;
+    }
+    .blog-meta {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--muted-fg);
+      text-transform: uppercase;
+    }
+    .section-card {
+      background: var(--card-bg);
+      border: 2px solid var(--border);
+      padding: 36px;
+      margin-bottom: 32px;
+    }
+    .section-card h2 {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: -0.03em;
+      color: var(--fg);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .section-card p {
+      color: var(--muted-fg);
+      line-height: 1.7;
+      font-size: 15px;
+      margin-bottom: 18px;
+    }
+    .section-card code {
+      background: var(--muted);
+      border: 1px solid var(--border);
+      color: var(--accent);
+      padding: 2px 6px;
+      font-family: var(--font-mono);
+      font-size: 13px;
+    }
+    .blog-step-list {
+      color: var(--muted-fg);
+      margin-left: 20px;
+      line-height: 1.8;
+      font-size: 14px;
+      font-family: var(--font-mono);
+    }
+    .blog-step-list strong {
+      color: var(--fg);
+    }
+    .code-block {
+      background: #000000;
+      border: 2px solid var(--border);
+      padding: 20px;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: #38bdf8;
+      overflow-x: auto;
+      margin: 20px 0;
+      line-height: 1.6;
+    }
+    .code-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 10px;
+      margin-bottom: 14px;
+      font-family: var(--font-display);
+      font-size: 11px;
+      color: var(--accent);
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating Navigation Bar -->
+  <div class="navbar-wrapper">
+    <nav class="navbar">
+      <div class="nav-container">
+        <a href="index.html" class="brand-logo">
+          <div class="brand-icon-box">⚡</div>
+          <span class="brand-text">OMNISTORE // CMS</span>
+        </a>
+
+        <ul class="nav-links">
+          <li><a href="index.html#features">Features</a></li>
+          <li><a href="index.html#developer-api">API Engine</a></li>
+          <li><a href="developer-guide.html" class="active">Dev Guide</a></li>
+          <li><a href="mcp-server.html">MCP Servers</a></li>
+          <li><a href="docs.html">REST Docs</a></li>
+          <li><a href="index.html#pricing">Pricing</a></li>
+        </ul>
+
+        <div class="nav-actions">
+          <a href="docs.html" class="btn btn-secondary" style="font-size: 11px; padding: 8px 14px;">Interactive Docs</a>
+          <a href="http://localhost:3000/developer" class="btn btn-primary" style="font-size: 11px; padding: 8px 16px;">
+            <span>API Portal ↗</span>
+          </a>
+        </div>
+      </div>
+    </nav>
+  </div>
+
+  <!-- Blog Article Content -->
+  <div class="blog-container">
+
+    <!-- Header -->
+    <header class="blog-header">
+      <div class="badge-pill">💻 Developer Architecture Guide</div>
+      <h1 class="blog-title">Building Enterprise Integrations: REST APIs, Webhooks &amp; Custom Runtimes</h1>
+      <div class="blog-meta">
+        <span>Author: <strong>Platform Engineering</strong></span>
+        <span>•</span>
+        <span>Spec: <strong>API v1.4</strong></span>
+        <span>•</span>
+        <span>Read Time: <strong>8 MIN</strong></span>
+      </div>
+    </header>
+
+    <!-- SECTION 1: GETTING STARTED -->
+    <section class="section-card">
+      <h2>01 // API Authentication &amp; Secret Key Generation</h2>
+      <p>
+        OmniStore CMS provides a high-throughput REST API for headless e-commerce, custom mobile apps, and ERP system synchronization. Every request to the OmniStore Developer API must include your secret API key in the HTTP <code>Authorization</code> header using the Bearer token scheme.
+      </p>
+      <p>
+        To generate an API secret key:
+      </p>
+      <ol class="blog-step-list">
+        <li>Log into the <strong>Master Admin Control Panel</strong> (<code>http://localhost:3000</code>).</li>
+        <li>Navigate to the <strong>Developer API</strong> tab in the sidebar menu.</li>
+        <li>Click <strong>Generate Secret Key</strong>, specify your name identifier (e.g. <code>ERP Sync Service</code>), and select your scope permissions (e.g. <code>read_products,write_orders</code>).</li>
+        <li>Copy your secret API token prefixed with <code>sk_live_...</code>.</li>
+      </ol>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span>HTTP Authorization Header</span>
+          <span>Bearer Authentication</span>
+        </div>
+        <pre>Authorization: Bearer sk_live_9f8a2b3c4d5e6f7a8b9c0d</pre>
+      </div>
+    </section>
+
+    <!-- SECTION 2: REST API ENDPOINTS -->
+    <section class="section-card">
+      <h2>02 // Core REST API Endpoints &amp; Payloads</h2>
+      <p>
+        Interact with catalog products, submit orders, and query customer profiles directly via REST API endpoints.
+      </p>
+
+      <!-- Endpoint A: Query Products -->
+      <div style="margin-top: 24px;">
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+          <span class="method-pill get">GET</span>
+          <span style="font-family: var(--font-mono); font-size: 15px; font-weight: 700; color: var(--fg);">/api/v1/products</span>
+        </div>
+        <p>Retrieves a list of catalog products with variant pricing, stock counts, and WebP media CDN URLs.</p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span>Bash / cURL</span>
+            <span>HTTP Request</span>
+          </div>
+          <pre>curl -X GET "https://api.omnistore.internal/api/v1/products?limit=10" \
+  -H "Authorization: Bearer sk_live_9f8a2b3c4d5e6f7a8b9c0d" \
+  -H "Content-Type: application/json"</pre>
+        </div>
+      </div>
+
+      <!-- Endpoint B: Create Order -->
+      <div style="margin-top: 32px;">
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+          <span class="method-pill post">POST</span>
+          <span style="font-family: var(--font-mono); font-size: 15px; font-weight: 700; color: var(--fg);">/api/v1/orders</span>
+        </div>
+        <p>Programmatically place customer orders and trigger automated multi-channel notifications (Email, SMS, WhatsApp).</p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span>JSON Body Payload</span>
+            <span>POST Request</span>
+          </div>
+          <pre>{
+  "customerName": "John Doe",
+  "customerEmail": "john@example.com",
+  "items": [
+    { "productId": "prod_sneaker_pro", "quantity": 1, "price": 128.50 }
+  ],
+  "totalAmount": 128.50,
+  "paymentGateway": "STRIPE",
+  "shippingAddress": {
+    "street": "100 Market St",
+    "city": "San Francisco",
+    "country": "United States"
+  }
+}</pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 3: WEBHOOKS & SIGNATURE VERIFICATION -->
+    <section class="section-card">
+      <h2>03 // Real-Time Webhooks &amp; HMAC Verification</h2>
+      <p>
+        Webhooks allow your application to receive real-time HTTP POST notifications when events occur in your OmniStore account (such as <code>order.created</code>, <code>order.fulfilled</code>, or <code>product.updated</code>).
+      </p>
+
+      <h3 style="font-family: var(--font-display); font-size: 1.1rem; text-transform: uppercase; color: var(--accent); margin-top: 24px; margin-bottom: 10px;">
+        Verifying Webhook Signatures (HMAC SHA-256)
+      </h3>
+      <p>
+        To verify that incoming webhook notifications originated from OmniStore CMS and were not tampered with, compute an HMAC SHA-256 digest using your endpoint signing secret (<code>whsec_...</code>) and compare it against the <code>X-OmniStore-Signature</code> header.
+      </p>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span>Node.js / Express</span>
+          <span>Signature Verification Handler</span>
+        </div>
+        <pre><span style="color: #c084fc;">const</span> crypto = <span style="color: #60a5fa;">require</span>(<span style="color: #f43f5e;">'crypto'</span>);
+
+<span style="color: #c084fc;">function</span> <span style="color: #38bdf8;">verifyOmniStoreWebhook</span>(rawBody, signatureHeader, secret) {
+  <span style="color: #c084fc;">const</span> expectedSignature = crypto
+    .<span style="color: #38bdf8;">createHmac</span>(<span style="color: #f43f5e;">'sha256'</span>, secret)
+    .<span style="color: #38bdf8;">update</span>(rawBody, <span style="color: #f43f5e;">'utf8'</span>)
+    .<span style="color: #38bdf8;">digest</span>(<span style="color: #f43f5e;">'hex'</span>);
+
+  <span style="color: #c084fc;">return</span> crypto.<span style="color: #38bdf8;">timingSafeEqual</span>(
+    Buffer.<span style="color: #38bdf8;">from</span>(signatureHeader),
+    Buffer.<span style="color: #38bdf8;">from</span>(expectedSignature)
+  );
+}</pre>
+      </div>
+    </section>
+
+    <!-- SECTION 4: CUSTOM SCRIPTS & CSS -->
+    <section class="section-card">
+      <h2>04 // Custom Headless Runtimes &amp; CSS Overrides</h2>
+      <p>
+        Merchants can inject tracking scripts (Google Tag Manager, Meta Pixel, PostHog) and custom CSS stylesheets directly into their storefront templates without modifying source files.
+      </p>
+
+      <div style="background: var(--muted); border: 2px solid var(--border); padding: 20px; color: var(--muted-fg); font-size: 13px; font-family: var(--font-mono);">
+        <strong style="color: var(--accent);">LOCATION IN MASTER ADMIN:</strong><br>
+        Navigate to <strong>Developer API &gt; Custom Scripts / Custom CSS</strong> to edit scripts and stylesheet overrides in real time.
+      </div>
+    </section>
+
+    <!-- SECTION 5: RBAC PERMISSIONS -->
+    <section class="section-card">
+      <h2>05 // Multi-Tenant RBAC &amp; Permission Scoping</h2>
+      <p>
+        OmniStore CMS enforces role-based access controls across 5 staff tiers (<strong>Owner</strong>, <strong>Admin</strong>, <strong>Manager</strong>, <strong>Editor</strong>, <strong>Support</strong>) and 7 explicit feature matrix toggles (Products, Orders, Customers, Themes, Settings, Payments, Analytics).
+      </p>
+      <p>
+        When making API requests with staff tokens, permissions are evaluated atomically to ensure users cannot access restricted resources (e.g. Managers cannot view payment secrets or modify store billing).
+      </p>
+    </section>
+
+    <!-- FOOTER CTA -->
+    <div style="text-align: center; margin-top: 48px; padding: 48px; background: var(--card-bg); border: 2px solid var(--accent);">
+      <div class="badge-pill">Ready to Build</div>
+      <h2 style="font-family: var(--font-display); font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; text-transform: uppercase; letter-spacing: -0.04em; color: var(--fg); margin: 16px 0;">
+        Launch Developer Portal
+      </h2>
+      <p style="color: var(--muted-fg); max-width: 600px; margin: 0 auto 24px auto; font-size: 15px;">
+        Explore the live Developer Console inside Master Admin to generate API keys, test webhooks, and configure headless storefronts.
+      </p>
+      <a href="http://localhost:3000/developer" class="btn btn-primary" style="padding: 16px 36px; font-size: 14px;">
+        <span>Launch Developer Portal ↗</span>
+      </a>
+    </div>
+
+  </div>
+
+</body>
+</html>

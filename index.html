@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OMNISTORE CMS — NEXT-GEN MULTI-TENANT E-COMMERCE</title>
+  <meta name="description"
+    content="OmniStore CMS is a brutalist, high-performance multi-tenant e-commerce platform offering instant store creation, marketplace themes, real-time analytics, and headless developer APIs.">
+  <link rel="stylesheet" href="index.css">
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 fill=%22%23DFE104%22/><text y=%22.75em%22 x=%22.2em%22 font-family=%22sans-serif%22 font-weight=%22900%22 font-size=%2260%22 fill=%22%23000%22>OS</text></svg>">
+</head>
+
+<body>
+  <!-- SVG Noise Overlay Filter -->
+  <div class="noise-overlay" aria-hidden="true"></div>
+
+  <!-- Floating Brutalist Navigation Bar -->
+  <header class="navbar-wrapper">
+    <nav class="nav-container">
+      <!-- Logo Lockup -->
+      <a href="#" class="brand-logo">
+        <div class="brand-icon-box">OS</div>
+        <span class="brand-text">OmniStore <span style="color: var(--accent);">CMS</span></span>
+      </a>
+
+      <!-- Centered Nav Links -->
+      <ul class="nav-links">
+        <li><a href="#features">Features</a></li>
+        <li><a href="#developer-api">Developer API</a></li>
+        <li><a href="#themes">Themes</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="docs.html" style="color: var(--accent); border-bottom: 2px solid var(--accent); padding-bottom: 2px;">API Docs</a></li>
+        <li><a href="developer-guide.html">Dev Guide</a></li>
+        <li><a href="mcp-server.html">MCP Servers</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ul>
+
+      <!-- Nav Actions -->
+      <div class="nav-actions">
+        <a href="http://localhost:3000" class="btn-secondary" style="padding: 10px 20px; font-size: 12px;">Merchant Login</a>
+        <a href="#pricing" class="btn-primary" style="padding: 10px 24px; font-size: 12px;">
+          <span>Start Free →</span>
+        </a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="container">
+      <!-- Tagline Badge -->
+      <div>
+        <span class="badge-tag">
+          <span>⚡</span>
+          <span>NEXT-GEN MULTI-TENANT E-COMMERCE ENGINE</span>
+        </span>
+      </div>
+
+      <!-- Display Hero Headline with Viewport Clamp Typography -->
+      <h1 class="hero-display-title">
+        BUILD & GOVERN DIGITAL <span class="highlight-accent">STORES</span> WITH ABSOLUTE SPEED.
+      </h1>
+
+      <!-- Subhead Paragraph -->
+      <p class="hero-subhead">
+        Kinetic multi-tenant architecture designed for high-velocity commerce. Deploy isolated merchant storefronts, customize headless themes, execute sub-millisecond checkouts, and govern global stores from a unified terminal.
+      </p>
+
+      <!-- CTA Stack -->
+      <div class="hero-cta-stack">
+        <div class="hero-btn-row">
+          <a href="#pricing" class="btn-primary" style="padding: 18px 44px; font-size: 16px;">
+            <span>Get Started Free →</span>
+          </a>
+          <a href="#developer-api" class="btn-secondary" style="padding: 18px 36px; font-size: 16px;">
+            <span>Explore Developer API</span>
+          </a>
+        </div>
+        <span class="reassurance-caption">● NO CREDIT CARD REQUIRED • INSTANT 30-SECOND SETUP • FASTIFY & PRISMA CORE</span>
+      </div>
+
+      <!-- Backed By Strip -->
+      <div class="backed-by-strip">
+        <span class="backed-by-label">Engine Infrastructure:</span>
+        <span class="partner-tag">FASTIFY CORE (PORT 5000 / 5002)</span>
+        <span class="partner-tag">PRISMA ORM</span>
+        <span class="partner-tag">POSTGRESQL MULTI-TENANCY</span>
+        <span class="partner-tag">NEXT.JS TURBOPACK</span>
+        <span class="partner-tag">REST / OPENAPI 3.0</span>
+      </div>
+
+      <!-- Live Mockup Terminal Window -->
+      <div class="mockup-container">
+        <div class="mockup-header">
+          <div class="mockup-dots">
+            <div class="dot dot-red"></div>
+            <div class="dot dot-yellow"></div>
+            <div class="dot dot-green"></div>
+          </div>
+          <div class="mockup-url-bar">
+            TERMINAL://APP.OMNISTORE-CMS.INTERNAL/DASHBOARD
+          </div>
+          <div style="font-family: var(--font-mono); font-size: 11px; color: var(--accent); font-weight: 700;">
+            ● LIVE SESSION
+          </div>
+        </div>
+
+        <div class="mockup-body">
+          <!-- Sidebar -->
+          <div class="mockup-sidebar">
+            <div class="mockup-nav-item active">
+              <span>📊 Dashboard Overview</span>
+            </div>
+            <div class="mockup-nav-item">
+              <span>👥 Users Governance</span>
+            </div>
+            <div class="mockup-nav-item">
+              <span>🏪 Global Stores</span>
+            </div>
+            <div class="mockup-nav-item">
+              <span>🎨 Marketplace Themes</span>
+            </div>
+            <div class="mockup-nav-item">
+              <span>⚡ API Keys & Webhooks</span>
+            </div>
+          </div>
+
+          <!-- Main Content Area -->
+          <div class="mockup-content">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px;">
+              <div class="card-brutal" style="padding: 20px;">
+                <div style="font-family: var(--font-display); font-size: 11px; text-transform: uppercase; color: var(--muted-fg); font-weight: 800;">Total Sales Volume</div>
+                <div id="live-sales-ticker" style="font-family: var(--font-display); font-size: 2rem; font-weight: 800; color: var(--accent); margin-top: 8px;">
+                  $48,920.00
+                </div>
+              </div>
+              <div class="card-brutal" style="padding: 20px;">
+                <div style="font-family: var(--font-display); font-size: 11px; text-transform: uppercase; color: var(--muted-fg); font-weight: 800;">Active Stores</div>
+                <div style="font-family: var(--font-display); font-size: 2rem; font-weight: 800; color: var(--fg); margin-top: 8px;">
+                  1,482
+                </div>
+              </div>
+              <div class="card-brutal" style="padding: 20px;">
+                <div style="font-family: var(--font-display); font-size: 11px; text-transform: uppercase; color: var(--muted-fg); font-weight: 800;">System Uptime</div>
+                <div style="font-family: var(--font-display); font-size: 2rem; font-weight: 800; color: #4ade80; margin-top: 8px;">
+                  99.99%
+                </div>
+              </div>
+            </div>
+
+            <div class="card-brutal" style="padding: 24px;">
+              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; border-bottom: 2px solid var(--border); padding-bottom: 12px;">
+                <span style="font-family: var(--font-display); font-size: 13px; font-weight: 800; text-transform: uppercase;">Real-Time Transaction Feed</span>
+                <span class="badge-tag" style="margin-bottom: 0; padding: 2px 8px; font-size: 10px;">● CONNECTED</span>
+              </div>
+              <div id="live-feed-list" style="display: flex; flex-direction: column; gap: 12px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 14px;">
+                  <div>
+                    <div style="font-weight: 700; font-family: var(--font-display); text-transform: uppercase;">Nova Smart Speaker Pro</div>
+                    <div style="color: var(--muted-fg); font-size: 12px; font-family: var(--font-mono);">STORE: NOVA-TECH • MICHAEL S. (SAN FRANCISCO)</div>
+                  </div>
+                  <div style="font-family: var(--font-display); font-weight: 800; color: var(--accent); font-size: 16px;">+$189.00</div>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0; font-size: 14px;">
+                  <div>
+                    <div style="font-weight: 700; font-family: var(--font-display); text-transform: uppercase;">Minimalist Leather Tote</div>
+                    <div style="color: var(--muted-fg); font-size: 12px; font-family: var(--font-mono);">STORE: LUXE-ATELIER • ELENA V. (TOKYO)</div>
+                  </div>
+                  <div style="font-family: var(--font-display); font-weight: 800; color: var(--accent); font-size: 16px;">+$240.00</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Infinite Continuous Stats Marquee (Fast High-Energy Motion) -->
+  <div class="marquee-container marquee-accent-bg" aria-label="Live Platform Metrics">
+    <div class="marquee-track marquee-fast">
+      <div class="marquee-item"><span>$48.9M+ SALES VOLUME</span> <span class="marquee-separator">✦</span></div>
+      <div class="marquee-item"><span>1,480+ ACTIVE STORES</span> <span class="marquee-separator">✦</span></div>
+      <div class="marquee-item"><span>&lt;18MS LATENCY</span> <span class="marquee-separator">✦</span></div>
+      <div class="marquee-item"><span>99.99% ENTERPRISE SLA</span> <span class="marquee-separator">✦</span></div>
+      <div class="marquee-item"><span>100% POSTGRESQL ISOLATION</span> <span class="marquee-separator">✦</span></div>
+      <div class="marquee-item"><span>HEADLESS REST / OPENAPI</span> <span class="marquee-separator">✦</span></div>
+      <!-- Duplicate for seamless continuous loop -->
+      <div class="marquee-item"><span>$48.9M+ SALES VOLUME</span> <span class="marquee-separator">✦</span></div>
+      <div class="marquee-item"><span>1,480+ ACTIVE STORES</span> <span class="marquee-separator">✦</span></div>
+      <div class="marquee-item"><span>&lt;18MS LATENCY</span> <span class="marquee-separator">✦</span></div>
+      <div class="marquee-item"><span>99.99% ENTERPRISE SLA</span> <span class="marquee-separator">✦</span></div>
+      <div class="marquee-item"><span>100% POSTGRESQL ISOLATION</span> <span class="marquee-separator">✦</span></div>
+      <div class="marquee-item"><span>HEADLESS REST / OPENAPI</span> <span class="marquee-separator">✦</span></div>
+    </div>
+  </div>
+
+  <!-- Platform Stats Bar -->
+  <section class="stats-section">
+    <div class="container stats-grid">
+      <div class="stat-item">
+        <div class="stat-num" id="stat-revenue">$48.9M</div>
+        <div class="stat-label">Total Platform Volume</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" id="stat-merchants">1,482</div>
+        <div class="stat-label">Active Merchant Stores</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" id="stat-uptime">99.99%</div>
+        <div class="stat-label">Enterprise SLA Uptime</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" id="stat-latency">&lt;18ms</div>
+        <div class="stat-label">Global Fastify API Latency</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Core Architecture / Features Section -->
+  <section class="section-wrapper" id="features">
+    <div class="container">
+      <div class="section-head">
+        <span class="badge-tag">CORE ARCHITECTURE</span>
+        <h2 class="section-title">BUILT FOR SCALE, SPEED & ABSOLUTE CONTROL</h2>
+        <p class="section-subtitle">
+          Everything required to orchestrate multi-tenant commerce fleets from a single brutalist control plane.
+        </p>
+      </div>
+
+      <div class="features-grid">
+        <!-- Feature Card 01 -->
+        <div class="card-brutal">
+          <span class="card-num">01</span>
+          <div>
+            <div style="font-size: 28px;">🏛️</div>
+            <h3 class="feature-card-title">Centralized Store Governance</h3>
+            <p class="feature-card-desc">
+              Total administrative oversight. Supervise multi-tenant instances, manage domain routing, monitor per-store transactions, and regulate platform policies.
+            </p>
+          </div>
+          <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--border);">
+            <span style="font-family: var(--font-mono); font-size: 11px; text-transform: uppercase;">PORT 5000 CORE ADMIN</span>
+          </div>
+        </div>
+
+        <!-- Feature Card 02 -->
+        <div class="card-brutal">
+          <span class="card-num">02</span>
+          <div>
+            <div style="font-size: 28px;">🏪</div>
+            <h3 class="feature-card-title">Multi-Tenant Store Engine</h3>
+            <p class="feature-card-desc">
+              Isolated merchant environments with instant slug domain resolution, custom branding, localized inventory, and dedicated checkout configurations.
+            </p>
+          </div>
+          <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--border);">
+            <span style="font-family: var(--font-mono); font-size: 11px; text-transform: uppercase;">ISOLATED POSTGRESQL SCHEMAS</span>
+          </div>
+        </div>
+
+        <!-- Feature Card 03 -->
+        <div class="card-brutal">
+          <span class="card-num">03</span>
+          <div>
+            <div style="font-size: 28px;">🎨</div>
+            <h3 class="feature-card-title">Marketplace Themes & Mega Menus</h3>
+            <p class="feature-card-desc">
+              Deploy rich visual mega menus with All Products, Featured Drops, custom badges, and switch between preset themes (Nova Tech, Luxe Fashion, Artisan).
+            </p>
+          </div>
+          <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--border);">
+            <span style="font-family: var(--font-mono); font-size: 11px; text-transform: uppercase;">LIVE CMS PREVIEW ENGINE</span>
+          </div>
+        </div>
+
+        <!-- Feature Card 04 -->
+        <div class="card-brutal">
+          <span class="card-num">04</span>
+          <div>
+            <div style="font-size: 28px;">📈</div>
+            <h3 class="feature-card-title">Real-Time Revenue Analytics</h3>
+            <p class="feature-card-desc">
+              Instant order aggregation, paid sales tracking, merchant fee reconciliation, customer retention metrics, and per-store financial reporting.
+            </p>
+          </div>
+          <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--border);">
+            <span style="font-family: var(--font-mono); font-size: 11px; text-transform: uppercase;">SUB-SECOND DATA PIPELINE</span>
+          </div>
+        </div>
+
+        <!-- Feature Card 05 -->
+        <div class="card-brutal">
+          <span class="card-num">05</span>
+          <div>
+            <div style="font-size: 28px;">⚡</div>
+            <h3 class="feature-card-title">Fastify & Prisma ORM Core</h3>
+            <p class="feature-card-desc">
+              High-throughput backend architecture built on the Fastify Node.js runtime, PostgreSQL database, and Prisma ORM for sub-millisecond execution.
+            </p>
+          </div>
+          <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--border);">
+            <span style="font-family: var(--font-mono); font-size: 11px; text-transform: uppercase;">ZERO-OVERHEAD FASTIFY RUNTIME</span>
+          </div>
+        </div>
+
+        <!-- Feature Card 06 -->
+        <div class="card-brutal">
+          <span class="card-num">06</span>
+          <div>
+            <div style="font-size: 28px;">🔒</div>
+            <h3 class="feature-card-title">RBAC & Developer API Security</h3>
+            <p class="feature-card-desc">
+              JWT session management, 6-digit OTP verification, granular role permissions, and public Developer API keys (/api/v1) for headless integrations.
+            </p>
+          </div>
+          <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--border);">
+            <span style="font-family: var(--font-mono); font-size: 11px; text-transform: uppercase;">API KEY & RATE-LIMIT GUARDS</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Secondary Infinite Feature Marquee (Reverse Motion) -->
+  <div class="marquee-container" aria-hidden="true">
+    <div class="marquee-track marquee-slow reverse">
+      <div class="marquee-item"><span style="color: var(--muted-fg);">HEADLESS COMMERCE</span> <span class="marquee-separator">●</span></div>
+      <div class="marquee-item"><span style="color: var(--accent);">RESTFUL /API/V1</span> <span class="marquee-separator">●</span></div>
+      <div class="marquee-item"><span style="color: var(--fg);">MULTI-TENANT ISOLATION</span> <span class="marquee-separator">●</span></div>
+      <div class="marquee-item"><span style="color: var(--muted-fg);">CUSTOM VISUAL MEGA MENUS</span> <span class="marquee-separator">●</span></div>
+      <div class="marquee-item"><span style="color: var(--accent);">TURBOPACK PERFORMANCE</span> <span class="marquee-separator">●</span></div>
+      <div class="marquee-item"><span style="color: var(--fg);">ZERO COLD STARTS</span> <span class="marquee-separator">●</span></div>
+      <!-- Duplicate -->
+      <div class="marquee-item"><span style="color: var(--muted-fg);">HEADLESS COMMERCE</span> <span class="marquee-separator">●</span></div>
+      <div class="marquee-item"><span style="color: var(--accent);">RESTFUL /API/V1</span> <span class="marquee-separator">●</span></div>
+      <div class="marquee-item"><span style="color: var(--fg);">MULTI-TENANT ISOLATION</span> <span class="marquee-separator">●</span></div>
+      <div class="marquee-item"><span style="color: var(--muted-fg);">CUSTOM VISUAL MEGA MENUS</span> <span class="marquee-separator">●</span></div>
+      <div class="marquee-item"><span style="color: var(--accent);">TURBOPACK PERFORMANCE</span> <span class="marquee-separator">●</span></div>
+      <div class="marquee-item"><span style="color: var(--fg);">ZERO COLD STARTS</span> <span class="marquee-separator">●</span></div>
+    </div>
+  </div>
+
+  <!-- Developer API Showcase & Interactive Sandbox Section -->
+  <section class="section-wrapper" id="developer-api">
+    <div class="container">
+      <div class="section-head">
+        <span class="badge-tag">DEVELOPER API • PORT 5002</span>
+        <h2 class="section-title">BUILD CUSTOM APPS & HEADLESS STORES WITH /API/V1</h2>
+        <p class="section-subtitle">
+          A dedicated, lightning-fast public REST API for mobile applications, headless Next.js frontends, and POS integrations. Completely isolated from CMS administrative functions.
+        </p>
+      </div>
+
+      <!-- Core Principle Callout -->
+      <div class="api-arch-card">
+        <div class="arch-col">
+          <span class="arch-badge">CMS CORE (PORT 5000) • MANAGE</span>
+          <h4 style="font-family: var(--font-display); font-size: 1.5rem; font-weight: 800; text-transform: uppercase; margin-bottom: 8px;">
+            Manage The Store
+          </h4>
+          <p style="font-size: 14px; color: var(--muted-fg); line-height: 1.6; margin-bottom: 20px;">
+            Protected merchant operations: product creation, inventory restocks, order fulfillment, refund approvals, theme configurations, and merchant credentials.
+          </p>
+          <div style="font-family: var(--font-mono); font-size: 12px; color: var(--muted-fg); background: #000; padding: 12px; border: 1px solid var(--border);">
+            🔒 Merchant JWT Authentication • Port 5000
+          </div>
+        </div>
+
+        <div class="arch-col" style="border-left: 2px solid var(--border);">
+          <span class="arch-badge" style="background: var(--accent); color: var(--accent-fg);">DEVELOPER API (PORT 5002) • BUILD</span>
+          <h4 style="font-family: var(--font-display); font-size: 1.5rem; font-weight: 800; text-transform: uppercase; margin-bottom: 8px; color: var(--accent);">
+            Build On Top Of The Store
+          </h4>
+          <p style="font-size: 14px; color: var(--muted-fg); line-height: 1.6; margin-bottom: 20px;">
+            Public-facing consumer endpoints: fetch active products, browse curated collections, search catalogs, construct shopping carts, and trigger checkout pipelines.
+          </p>
+          <div style="font-family: var(--font-mono); font-size: 12px; color: var(--accent); background: #000; padding: 12px; border: 1px solid var(--accent);">
+            ⚡ Public REST API (/api/v1) • Port 5002 • CORS Enabled
+          </div>
+        </div>
+      </div>
+
+      <!-- Interactive API Sandbox Terminal -->
+      <div class="sandbox-container">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; border-bottom: 2px solid var(--border); padding-bottom: 12px;">
+          <span style="font-family: var(--font-display); font-size: 14px; font-weight: 800; text-transform: uppercase; color: var(--accent);">
+            Interactive Developer API Console
+          </span>
+          <a href="docs.html" class="btn-outline" style="padding: 6px 14px; font-size: 11px;">
+            Full API Reference Documentation →
+          </a>
+        </div>
+
+        <!-- Request Controls -->
+        <div class="sandbox-input-row">
+          <select id="api-method-select" class="sandbox-method-select">
+            <option value="GET">GET</option>
+            <option value="POST">POST</option>
+          </select>
+          <input type="text" id="api-endpoint-input" class="sandbox-endpoint-input" value="http://localhost:5002/api/v1/products?limit=3" />
+          <button type="button" id="api-send-btn" class="btn-primary" style="padding: 12px 28px;">
+            Send Request ⚡
+          </button>
+        </div>
+
+        <!-- Quick Endpoint Presets -->
+        <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px;">
+          <span style="font-family: var(--font-mono); font-size: 11px; color: var(--muted-fg); display: flex; align-items: center;">Presets:</span>
+          <button type="button" class="btn-outline api-preset-btn" data-method="GET" data-url="http://localhost:5002/api/v1/products" style="padding: 4px 10px; font-size: 11px;">/products</button>
+          <button type="button" class="btn-outline api-preset-btn" data-method="GET" data-url="http://localhost:5002/api/v1/collections" style="padding: 4px 10px; font-size: 11px;">/collections</button>
+          <button type="button" class="btn-outline api-preset-btn" data-method="GET" data-url="http://localhost:5002/api/v1/store" style="padding: 4px 10px; font-size: 11px;">/store</button>
+          <button type="button" class="btn-outline api-preset-btn" data-method="GET" data-url="http://localhost:5002/api/v1/menus/header-menu" style="padding: 4px 10px; font-size: 11px;">/menus/header-menu</button>
+        </div>
+
+        <!-- Response Terminal -->
+        <div class="terminal-box" id="api-response-terminal">
+          <div class="code-comment">// Response Output: Ready to send request...</div>
+          <pre style="margin-top: 8px; line-height: 1.5;"><code class="code-prop">{
+  <span class="code-keyword">"status"</span>: <span class="code-num">200</span>,
+  <span class="code-keyword">"message"</span>: <span class="code-str">"Developer API is running on port 5002"</span>,
+  <span class="code-keyword">"docs"</span>: <span class="code-str">"http://localhost:5002/documentation"</span>
+}</code></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Marketplace Themes Showcase Section -->
+  <section class="section-wrapper" id="themes">
+    <div class="container">
+      <div class="section-head">
+        <span class="badge-tag">THEME MARKETPLACE</span>
+        <h2 class="section-title">PRESET THEMES BUILT FOR HIGH CONVERSION</h2>
+        <p class="section-subtitle">
+          Toggle between instant storefront aesthetic presets. Tailored typography, color palettes, and visual mega menu systems.
+        </p>
+      </div>
+
+      <div class="features-grid">
+        <!-- Theme Card 1 -->
+        <div class="card-brutal">
+          <div>
+            <span class="badge-tag">DEFAULT PRESET</span>
+            <h3 class="feature-card-title">Nova Horizon Goods</h3>
+            <p class="feature-card-desc">
+              Clean modern storefront layout with warm editorial accents, dynamic visual mega menus, and sticky cart sidebars.
+            </p>
+          </div>
+          <div style="margin-top: 28px; display: flex; gap: 8px;">
+            <span style="display: inline-block; width: 24px; height: 24px; background: #6366f1; border: 1px solid #fff;"></span>
+            <span style="display: inline-block; width: 24px; height: 24px; background: #09090b; border: 1px solid #fff;"></span>
+            <span style="display: inline-block; width: 24px; height: 24px; background: #fafafa; border: 1px solid #fff;"></span>
+          </div>
+        </div>
+
+        <!-- Theme Card 2 -->
+        <div class="card-brutal">
+          <div>
+            <span class="badge-tag">LUXE PRESET</span>
+            <h3 class="feature-card-title">Luxe Atelier & Fashion</h3>
+            <p class="feature-card-desc">
+              Sophisticated editorial design tailored for high-end apparel, designer drops, and luxury jewelry retailers.
+            </p>
+          </div>
+          <div style="margin-top: 28px; display: flex; gap: 8px;">
+            <span style="display: inline-block; width: 24px; height: 24px; background: #c5a880; border: 1px solid #fff;"></span>
+            <span style="display: inline-block; width: 24px; height: 24px; background: #1c1917; border: 1px solid #fff;"></span>
+            <span style="display: inline-block; width: 24px; height: 24px; background: #fefce8; border: 1px solid #fff;"></span>
+          </div>
+        </div>
+
+        <!-- Theme Card 3 -->
+        <div class="card-brutal">
+          <div>
+            <span class="badge-tag">MINIMAL PRESET</span>
+            <h3 class="feature-card-title">Mincom Tech Direct</h3>
+            <p class="feature-card-desc">
+              High-contrast dark mode storefront engineered for gadget makers, tech gear, and electronics brands.
+            </p>
+          </div>
+          <div style="margin-top: 28px; display: flex; gap: 8px;">
+            <span style="display: inline-block; width: 24px; height: 24px; background: #dfe104; border: 1px solid #fff;"></span>
+            <span style="display: inline-block; width: 24px; height: 24px; background: #09090b; border: 1px solid #fff;"></span>
+            <span style="display: inline-block; width: 24px; height: 24px; background: #3f3f46; border: 1px solid #fff;"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing Section (3-Column Brutalist Matrix) -->
+  <section class="section-wrapper" id="pricing">
+    <div class="container">
+      <div class="section-head" style="text-align: center; max-width: 800px; margin: 0 auto 48px auto;">
+        <span class="badge-tag">TRANSPARENT PRICING</span>
+        <h2 class="section-title">SCALE YOUR COMMERCE FLEET WITHOUT SURPRISES</h2>
+        <p class="section-subtitle" style="margin: 0 auto;">
+          Choose the ideal subscription tier for single storefronts or multi-tenant commercial operations.
+        </p>
+
+        <!-- Billing Period Switcher -->
+        <div class="billing-switcher" style="margin-top: 32px;">
+          <button type="button" class="switcher-btn active" data-period="monthly">Monthly</button>
+          <button type="button" class="switcher-btn" data-period="annual">Annual (Save 40%)</button>
+          <button type="button" class="switcher-btn" data-period="lifetime">Lifetime License</button>
+        </div>
+      </div>
+
+      <div class="pricing-grid">
+        <!-- Tier 1: Free Starter -->
+        <div class="card-brutal pricing-card">
+          <div>
+            <span class="badge-tag">STARTER</span>
+            <h3 style="font-family: var(--font-display); font-size: 1.75rem; font-weight: 800; text-transform: uppercase;">Free Store</h3>
+            <div class="price-num" id="price-free">$0</div>
+            <p style="font-size: 13px; color: var(--muted-fg);" id="price-free-sub">Free forever for personal tests</p>
+
+            <ul class="pricing-feature-list">
+              <li><span class="check-icon">✓</span> 1 Active Storefront</li>
+              <li><span class="check-icon">✓</span> Up to 50 Products</li>
+              <li><span class="check-icon">✓</span> Standard Visual Mega Menus</li>
+              <li><span class="check-icon">✓</span> Community Discord Support</li>
+            </ul>
+          </div>
+          <a href="http://localhost:3000" class="btn-secondary" style="width: 100%;">
+            Start Free
+          </a>
+        </div>
+
+        <!-- Tier 2: Pro Merchant (Featured) -->
+        <div class="card-brutal pricing-card featured">
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <span class="badge-tag badge-accent">RECOMMENDED</span>
+              <span style="font-family: var(--font-mono); font-size: 11px; color: var(--accent); font-weight: 700;">PRO TIER</span>
+            </div>
+            <h3 style="font-family: var(--font-display); font-size: 1.75rem; font-weight: 800; text-transform: uppercase;">Pro Merchant</h3>
+            <div class="price-num" id="price-pro" style="color: var(--accent);">$29</div>
+            <p style="font-size: 13px; color: var(--muted-fg);" id="price-pro-sub">Billed monthly • Cancel anytime</p>
+
+            <ul class="pricing-feature-list">
+              <li><span class="check-icon">✓</span> Up to 5 Multi-Tenant Stores</li>
+              <li><span class="check-icon">✓</span> Unlimited Products & Catalogs</li>
+              <li><span class="check-icon">✓</span> Full Theme Marketplace Engine</li>
+              <li><span class="check-icon">✓</span> Real-Time Sales & Revenue Analytics</li>
+              <li><span class="check-icon">✓</span> Custom Domain Routing</li>
+            </ul>
+          </div>
+          <a href="http://localhost:3000" class="btn-primary" style="width: 100%;">
+            Launch Pro Merchant →
+          </a>
+        </div>
+
+        <!-- Tier 3: Enterprise & Developer -->
+        <div class="card-brutal pricing-card">
+          <div>
+            <span class="badge-tag">ENTERPRISE</span>
+            <h3 style="font-family: var(--font-display); font-size: 1.75rem; font-weight: 800; text-transform: uppercase;">Fleet & API</h3>
+            <div class="price-num" id="price-team">$199</div>
+            <p style="font-size: 13px; color: var(--muted-fg);" id="price-team-sub">Billed monthly for fleets</p>
+
+            <ul class="pricing-feature-list">
+              <li><span class="check-icon">✓</span> Unlimited Storefront Fleets</li>
+              <li><span class="check-icon">✓</span> Developer API (/api/v1) Full Access</li>
+              <li><span class="check-icon">✓</span> Dedicated Fastify Worker Cores</li>
+              <li><span class="check-icon">✓</span> Webhooks & Event Streams</li>
+              <li><span class="check-icon">✓</span> 24/7 SLA & Direct Engineering Channel</li>
+            </ul>
+          </div>
+          <a href="http://localhost:3000" class="btn-secondary" style="width: 100%;">
+            Deploy Fleet →
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Accordion Section -->
+  <section class="section-wrapper" id="faq">
+    <div class="container">
+      <div class="section-head" style="text-align: center; max-width: 800px; margin: 0 auto 48px auto;">
+        <span class="badge-tag">QUESTIONS & ANSWERS</span>
+        <h2 class="section-title">FREQUENTLY ASKED QUESTIONS</h2>
+        <p class="section-subtitle" style="margin: 0 auto;">
+          Everything you need to know about the multi-tenant architecture, Developer API, and deployment options.
+        </p>
+      </div>
+
+      <div class="faq-list">
+        <div class="faq-item">
+          <div class="faq-question">
+            <span>How does multi-tenant store isolation work?</span>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-answer">
+            Every merchant store is partitioned at the database layer with tenant-specific identifiers and schema filters. Fastify request handlers resolve store tenancy via custom domain, subdomain slug, or explicit header keys (x-store-id) ensuring 100% data boundary security.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">
+            <span>What is the difference between CMS (Port 5000) and Developer API (Port 5002)?</span>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-answer">
+            The CMS backend on port 5000 governs administrative merchant operations (inventory management, financial reconciliation, theme configurations, user accounts). The Developer API on port 5002 exposes a high-performance public RESTful API specifically designed for headless storefronts, mobile apps, and point-of-sale integrations.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">
+            <span>Can I customize the Visual Mega Menus from the CMS?</span>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-answer">
+            Yes! The CMS Navigation Studio gives you direct privileges to configure 2-column feature cards (All Products, Featured Drops, Special Offers), custom section titles, "View All" destination URLs, promo card banner images, and footer highlight badges with live interactive previews.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">
+            <span>How do I self-host OmniStore CMS on my own cloud?</span>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-answer">
+            OmniStore CMS runs on standard Node.js (v18+) and PostgreSQL environments. You can run all microservices with Docker Compose, deploy to AWS/DigitalOcean/GCP, or run locally using our fastify and next dev servers.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Brutalist Full Bleed Footer -->
+  <footer class="footer-section">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <a href="#" class="brand-logo" style="margin-bottom: 20px;">
+            <div class="brand-icon-box">OS</div>
+            <span class="brand-text">OmniStore <span style="color: var(--accent);">CMS</span></span>
+          </a>
+          <p style="font-size: 14px; color: var(--muted-fg); max-width: 320px; line-height: 1.6; margin-bottom: 24px;">
+            High-energy multi-tenant e-commerce platform. Built with Fastify, Prisma ORM, PostgreSQL, and Next.js Turbopack.
+          </p>
+          <div style="display: flex; gap: 8px;">
+            <span class="badge-tag" style="margin-bottom: 0;">⚡ PORT 5000 / 5002</span>
+            <span class="badge-tag badge-accent" style="margin-bottom: 0;">SYSTEM HEALTH: 100%</span>
+          </div>
+        </div>
+
+        <div>
+          <h5 class="footer-col-title">Platform</h5>
+          <ul class="footer-links">
+            <li><a href="#features">Architecture</a></li>
+            <li><a href="#themes">Theme Marketplace</a></li>
+            <li><a href="#pricing">Pricing Plans</a></li>
+            <li><a href="http://localhost:3000">Merchant Dashboard</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h5 class="footer-col-title">Developers</h5>
+          <ul class="footer-links">
+            <li><a href="docs.html">Developer API Reference</a></li>
+            <li><a href="developer-guide.html">Integration Guide</a></li>
+            <li><a href="#developer-api">API Sandbox</a></li>
+            <li><a href="http://localhost:5002/documentation">Swagger OpenAPI UI</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h5 class="footer-col-title">Security & Governance</h5>
+          <ul class="footer-links">
+            <li><a href="#">Role-Based Access</a></li>
+            <li><a href="#">Tenant Isolation</a></li>
+            <li><a href="#">SLA & Uptime</a></li>
+            <li><a href="#">Privacy & Terms</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>© 2026 OMNISTORE CMS PLATFORM. ALL RIGHTS RESERVED.</span>
+        <span>BRUTALIST KINETIC TYPOGRAPHY ENGINE</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="index.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Model Context Protocol (MCP) Guide — OmniStore Developer Docs</title>
+  <meta name="description" content="Complete documentation and integration guide for Model Context Protocol (MCP) servers in Claude, Antigravity, and Cursor. Explore features, configuration schemas, and real-world AI integrations.">
+  <link rel="stylesheet" href="index.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 fill=%22%23DFE104%22/><text y=%22.75em%22 x=%22.2em%22 font-family=%22sans-serif%22 font-weight=%22900%22 font-size=%2260%22 fill=%22%23000%22>⚡</text></svg>">
+  <style>
+    .doc-layout {
+      max-width: 1180px;
+      margin: 40px auto 100px auto;
+      padding: 0 24px;
+    }
+    .doc-header {
+      margin-bottom: 48px;
+      padding-bottom: 32px;
+      border-bottom: 2px solid var(--border);
+    }
+    .doc-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.2rem, 5vw, 3.8rem);
+      font-weight: 900;
+      line-height: 1.05;
+      color: var(--fg);
+      text-transform: uppercase;
+      letter-spacing: -0.04em;
+      margin: 16px 0;
+    }
+    .doc-meta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 16px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--muted-fg);
+      text-transform: uppercase;
+    }
+    .section-card {
+      background: var(--card-bg);
+      border: 2px solid var(--border);
+      padding: 36px;
+      margin-bottom: 32px;
+      box-shadow: 6px 6px 0px 0px rgba(0,0,0,1);
+      position: relative;
+    }
+    .section-card h2 {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: -0.03em;
+      color: var(--fg);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .section-card h3 {
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin: 28px 0 12px 0;
+    }
+    .section-card p, .section-card li {
+      color: var(--muted-fg);
+      line-height: 1.75;
+      font-size: 15px;
+    }
+    .section-card ul, .section-card ol {
+      margin: 12px 0 20px 24px;
+    }
+    .section-card code {
+      background: var(--muted);
+      border: 1px solid var(--border);
+      color: var(--accent);
+      padding: 2px 8px;
+      font-family: var(--font-mono);
+      font-size: 13px;
+    }
+    .code-block {
+      background: #09090b;
+      border: 2px solid var(--border);
+      padding: 20px;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: #38bdf8;
+      overflow-x: auto;
+      margin: 18px 0;
+      line-height: 1.65;
+      position: relative;
+    }
+    .code-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 10px;
+      margin-bottom: 14px;
+      font-family: var(--font-display);
+      font-size: 11px;
+      color: var(--accent);
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+      margin: 24px 0;
+    }
+    .feature-item {
+      background: #141416;
+      border: 1px solid var(--border);
+      padding: 20px;
+    }
+    .feature-item h4 {
+      font-family: var(--font-display);
+      color: #ffffff;
+      font-size: 16px;
+      font-weight: 800;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--accent);
+      color: #000;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border: 1px solid #000;
+    }
+    .tab-bar {
+      display: flex;
+      gap: 8px;
+      border-bottom: 2px solid var(--border);
+      margin-bottom: 24px;
+      overflow-x: auto;
+    }
+    .tab-btn {
+      background: transparent;
+      border: 2px solid transparent;
+      border-bottom: none;
+      color: var(--muted-fg);
+      font-family: var(--font-display);
+      font-size: 14px;
+      font-weight: 800;
+      text-transform: uppercase;
+      padding: 10px 20px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .tab-btn:hover {
+      color: var(--fg);
+    }
+    .tab-btn.active {
+      background: var(--muted);
+      border-color: var(--border);
+      color: var(--accent);
+    }
+    .tab-content {
+      display: none;
+    }
+    .tab-content.active {
+      display: block;
+    }
+    .table-responsive {
+      overflow-x: auto;
+      margin: 20px 0;
+    }
+    table.custom-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      text-align: left;
+    }
+    table.custom-table th, table.custom-table td {
+      border: 1px solid var(--border);
+      padding: 12px 16px;
+    }
+    table.custom-table th {
+      background: var(--muted);
+      color: var(--accent);
+      font-family: var(--font-display);
+      text-transform: uppercase;
+      font-weight: 800;
+    }
+    table.custom-table tr:nth-child(even) {
+      background: rgba(255,255,255,0.02);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating Navigation Bar -->
+  <header class="navbar-wrapper">
+    <nav class="nav-container">
+      <a href="index.html" class="brand-logo">
+        <div class="brand-icon-box">OS</div>
+        <span class="brand-text">OmniStore <span style="color: var(--accent);">CMS</span></span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="index.html#features">Features</a></li>
+        <li><a href="index.html#developer-api">API Engine</a></li>
+        <li><a href="developer-guide.html">Dev Guide</a></li>
+        <li><a href="mcp-server.html" style="color: var(--accent); border-bottom: 2px solid var(--accent); padding-bottom: 2px;">MCP Servers</a></li>
+        <li><a href="docs.html">REST Docs</a></li>
+        <li><a href="index.html#pricing">Pricing</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <a href="docs.html" class="btn-secondary" style="padding: 10px 20px; font-size: 12px;">Interactive Docs</a>
+        <a href="http://localhost:3000/developer" class="btn-primary" style="padding: 10px 24px; font-size: 12px;">
+          <span>API Portal ↗</span>
+        </a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Main Content Container -->
+  <main class="doc-layout">
+
+    <!-- Header Section -->
+    <header class="doc-header">
+      <div class="badge-pill">⚡ Model Context Protocol Specification</div>
+      <h1 class="doc-title">Model Context Protocol (MCP) Integration Guide</h1>
+      <div class="doc-meta">
+        <span>Target Clients: <strong>Claude Desktop • Antigravity • Cursor</strong></span>
+        <span>•</span>
+        <span>Standard: <strong>Open MCP v1.0</strong></span>
+        <span>•</span>
+        <span>Category: <strong>AI Tooling &amp; Agent Infrastructure</strong></span>
+      </div>
+    </header>
+
+    <!-- SECTION 1: WHAT IS MCP -->
+    <section class="section-card" id="overview">
+      <h2>01 // What is Model Context Protocol (MCP)?</h2>
+      <p>
+        <strong>Model Context Protocol (MCP)</strong> is an open-standard communication layer that enables AI models and autonomous coding agents to securely access external tools, live data sources, and contextual runtimes.
+      </p>
+      <p>
+        Instead of developing custom integrations for every AI client (e.g. separate plugins for Claude, Cursor, Antigravity, Zed, and VS Code), MCP solves the <strong>N × M fragmentation problem</strong>: developers build an MCP server once, and any MCP-compliant AI client can immediately query and execute its tools.
+      </p>
+
+      <h3>The 3 Core Primitives of MCP</h3>
+      <div class="feature-grid">
+        <div class="feature-item">
+          <h4>🛠️ 1. Tools</h4>
+          <p>Executable functions that the AI model can invoke with structured parameters (e.g. running SQL queries, creating GitHub Pull Requests, invoking REST APIs, executing Docker commands).</p>
+        </div>
+        <div class="feature-item">
+          <h4>📦 2. Resources</h4>
+          <p>Contextual data providers that the user or agent can attach (e.g. reading database schemas, live log streams, OpenAPI definitions, or memory graph snapshots).</p>
+        </div>
+        <div class="feature-item">
+          <h4>💬 3. Prompts</h4>
+          <p>Standardized, parameterized prompt templates and guided workflow runbooks provided directly by the server to guide the AI assistant.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 2: WHAT CAN YOU DO WITH MCP -->
+    <section class="section-card" id="capabilities">
+      <h2>02 // What Features Can You Build &amp; Execute Using MCP?</h2>
+      <p>
+        With MCP servers connected to your AI assistant, your agent evolves from a static code autocompleter to an end-to-end autonomous engineer. Here are the core real-world capabilities:
+      </p>
+
+      <div class="table-responsive">
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th>Domain</th>
+              <th>AI Agent Capabilities</th>
+              <th>Example Server / Packages</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Database &amp; SQL</strong></td>
+              <td>Inspect live table schemas, write &amp; safely test SQL queries, run EXPLAIN plans, generate seed scripts, and inspect database state.</td>
+              <td><code>@modelcontextprotocol/server-postgres</code>, <code>sqlite</code>, <code>mysql</code></td>
+            </tr>
+            <tr>
+              <td><strong>DevOps &amp; Git</strong></td>
+              <td>Read/create GitHub PRs, fetch open issues, inspect Docker container logs, restart Kubernetes pods, trigger CI/CD pipelines.</td>
+              <td><code>@modelcontextprotocol/server-github</code>, <code>docker-mcp</code>, <code>gitlab-mcp</code></td>
+            </tr>
+            <tr>
+              <td><strong>Live Web &amp; Search</strong></td>
+              <td>Perform real-time web searches, fetch external API specs, crawl documentation pages, and verify third-party library updates.</td>
+              <td><code>@modelcontextprotocol/server-brave-search</code>, <code>fetch</code>, <code>puppeteer</code></td>
+            </tr>
+            <tr>
+              <td><strong>Project Management</strong></td>
+              <td>Sync Jira tickets, update Linear tasks, query Notion documentation pages, post Slack notifications directly from coding turns.</td>
+              <td><code>linear-mcp</code>, <code>slack-mcp</code>, <code>notion-mcp</code></td>
+            </tr>
+            <tr>
+              <td><strong>UI &amp; Design Specs</strong></td>
+              <td>Extract Figma design tokens, inspect component auto-layouts, download SVG icons and assets automatically.</td>
+              <td><code>figma-mcp</code>, <code>designmd</code></td>
+            </tr>
+            <tr>
+              <td><strong>Persistent Memory</strong></td>
+              <td>Retain knowledge graphs and architectural decisions across different chat sessions and workspace reboots.</td>
+              <td><code>@modelcontextprotocol/server-memory</code></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- SECTION 3: CONFIGURATION BY ENVIRONMENT -->
+    <section class="section-card" id="setup">
+      <h2>03 // How to Configure MCP in Claude, Antigravity &amp; Cursor</h2>
+      <p>
+        Select your environment below to view configuration file paths, JSON schemas, transport protocols, and step-by-step setup instructions.
+      </p>
+
+      <!-- Tab Navigation -->
+      <div class="tab-bar">
+        <button class="tab-btn active" onclick="switchTab('claude')">🟣 Claude (Desktop &amp; CLI)</button>
+        <button class="tab-btn" onclick="switchTab('antigravity')">⚡ Antigravity (Google IDE)</button>
+        <button class="tab-btn" onclick="switchTab('cursor')">🔵 Cursor (AI Editor)</button>
+      </div>
+
+      <!-- TAB 1: CLAUDE -->
+      <div id="tab-claude" class="tab-content active">
+        <h3>Claude Desktop Configuration</h3>
+        <p>
+          Claude Desktop communicates with MCP servers over standard input/output (<code>stdio</code>). Configuration is stored in a central JSON file:
+        </p>
+
+        <ul>
+          <li><strong>Windows:</strong> <code>%APPDATA%\Claude\claude_desktop_config.json</code> (e.g. <code>C:\Users\&lt;Username&gt;\AppData\Roaming\Claude\claude_desktop_config.json</code>)</li>
+          <li><strong>macOS:</strong> <code>~/Library/Application Support/Claude/claude_desktop_config.json</code></li>
+          <li><strong>Linux:</strong> <code>~/.config/Claude/claude_desktop_config.json</code></li>
+        </ul>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span>claude_desktop_config.json</span>
+            <span>JSON Configuration</span>
+          </div>
+<pre>{
+  <span style="color: #c084fc;">"mcpServers"</span>: {
+    <span style="color: #c084fc;">"postgres"</span>: {
+      <span style="color: #c084fc;">"command"</span>: <span style="color: #f43f5e;">"npx"</span>,
+      <span style="color: #c084fc;">"args"</span>: [
+        <span style="color: #f43f5e;">"-y"</span>,
+        <span style="color: #f43f5e;">"@modelcontextprotocol/server-postgres"</span>,
+        <span style="color: #f43f5e;">"postgresql://postgres:password@localhost:5432/omnistore_cms"</span>
+      ]
+    },
+    <span style="color: #c084fc;">"github"</span>: {
+      <span style="color: #c084fc;">"command"</span>: <span style="color: #f43f5e;">"npx"</span>,
+      <span style="color: #c084fc;">"args"</span>: [<span style="color: #f43f5e;">"-y"</span>, <span style="color: #f43f5e;">"@modelcontextprotocol/server-github"</span>],
+      <span style="color: #c084fc;">"env"</span>: {
+        <span style="color: #c084fc;">"GITHUB_PERSONAL_ACCESS_TOKEN"</span>: <span style="color: #f43f5e;">"ghp_yourPersonalAccessToken"</span>
+      }
+    }
+  }
+}</pre>
+        </div>
+
+        <h4>Using MCP in Claude:</h4>
+        <ol>
+          <li>Save the configuration file and <strong>completely restart Claude Desktop</strong>.</li>
+          <li>Look for the <strong>Hammer (🔨) icon</strong> at the bottom right of the message box.</li>
+          <li>Click the icon to see all connected tools and their status. Claude will automatically invoke tools during conversations.</li>
+        </ol>
+      </div>
+
+      <!-- TAB 2: ANTIGRAVITY -->
+      <div id="tab-antigravity" class="tab-content">
+        <h3>Google Antigravity IDE Configuration</h3>
+        <p>
+          Antigravity supports both local <strong>Stdio</strong> (command/script) and remote <strong>SSE (Server-Sent Events)</strong> transports. MCP servers can be configured globally or bundled into workspace plugins.
+        </p>
+
+        <ul>
+          <li><strong>Global Scope (All Sessions):</strong> <code>~/.gemini/config/mcp_config.json</code></li>
+          <li><strong>Plugin Scope:</strong> <code>plugins/&lt;plugin_name&gt;/mcp_config.json</code></li>
+          <li><strong>Workspace Discovery:</strong> Automatically read from <code>.agents/</code> or plugin manifests.</li>
+        </ul>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span>~/.gemini/config/mcp_config.json</span>
+            <span>Antigravity Schema</span>
+          </div>
+<pre>{
+  <span style="color: #c084fc;">"mcpServers"</span>: {
+    <span style="color: #c084fc;">"sqlite-helper"</span>: {
+      <span style="color: #c084fc;">"command"</span>: <span style="color: #f43f5e;">"sqlite-mcp-server"</span>,
+      <span style="color: #c084fc;">"args"</span>: [<span style="color: #f43f5e;">"c:/Users/Nikhil/Desktop/cms/data.db"</span>],
+      <span style="color: #c084fc;">"env"</span>: {
+        <span style="color: #c084fc;">"DB_READONLY"</span>: <span style="color: #f43f5e;">"true"</span>
+      }
+    },
+    <span style="color: #c084fc;">"remote-team-service"</span>: {
+      <span style="color: #c084fc;">"serverUrl"</span>: <span style="color: #f43f5e;">"https://mcp.internal.company.com/sse"</span>
+    }
+  }
+}</pre>
+        </div>
+
+        <h4>How Antigravity Agent Uses MCP:</h4>
+        <ol>
+          <li><strong>Tool Discovery:</strong> Antigravity connects to configured servers upon session startup, registering tools as either eager or lazy tools.</li>
+          <li><strong>Lazy Loading:</strong> Tools are seamlessly called via <code>call_mcp_tool</code> to conserve prompt tokens until activated.</li>
+          <li><strong>Inspection UI:</strong> In the Antigravity IDE interface, navigate to <strong>Additional Options (...) &gt; MCP Servers</strong> to monitor connected servers, view active schemas, and test connections.</li>
+        </ol>
+      </div>
+
+      <!-- TAB 3: CURSOR -->
+      <div id="tab-cursor" class="tab-content">
+        <h3>Cursor AI Editor Configuration</h3>
+        <p>
+          Cursor natively integrates MCP into <strong>Cursor Composer (Agent Mode)</strong> and <strong>Cursor Chat</strong>.
+        </p>
+
+        <h4>Method 1: Via Cursor Settings UI (Recommended)</h4>
+        <ol>
+          <li>Press <code>Ctrl + Shift + J</code> (Windows/Linux) or <code>Cmd + Shift + J</code> (macOS) to open <strong>Cursor Settings</strong>.</li>
+          <li>Navigate to <strong>Features</strong> &gt; <strong>MCP Servers</strong>.</li>
+          <li>Click <strong>"+ Add New MCP Server"</strong>.</li>
+          <li>Enter Server details:
+            <ul>
+              <li><strong>Name:</strong> <code>postgres-db</code></li>
+              <li><strong>Type:</strong> <code>command</code> (or <code>sse</code>)</li>
+              <li><strong>Command:</strong> <code>npx -y @modelcontextprotocol/server-postgres postgresql://user:pass@localhost:5432/mydb</code></li>
+            </ul>
+          </li>
+        </ol>
+
+        <h4>Method 2: Project-Level Workspace Config (<code>.cursor/mcp.json</code>)</h4>
+        <p>Create a <code>.cursor/mcp.json</code> file in your repository root to share MCP definitions with your team:</p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span>.cursor/mcp.json</span>
+            <span>Project Scope</span>
+          </div>
+<pre>{
+  <span style="color: #c084fc;">"mcpServers"</span>: {
+    <span style="color: #c084fc;">"filesystem"</span>: {
+      <span style="color: #c084fc;">"command"</span>: <span style="color: #f43f5e;">"npx"</span>,
+      <span style="color: #c084fc;">"args"</span>: [
+        <span style="color: #f43f5e;">"-y"</span>,
+        <span style="color: #f43f5e;">"@modelcontextprotocol/server-filesystem"</span>,
+        <span style="color: #f43f5e;">"C:\\Users\\Nikhil\\Desktop\\cms"</span>
+      ]
+    }
+  }
+}</pre>
+        </div>
+
+        <h4>Using MCP in Cursor Composer:</h4>
+        <p>Switch Composer mode to <strong>Agent</strong>. When prompted to inspect external databases, git repositories, or run external CLI tasks, Cursor will automatically invoke the corresponding MCP tool.</p>
+      </div>
+    </section>
+
+    <!-- SECTION 4: COMPARISON MATRIX -->
+    <section class="section-card" id="comparison">
+      <h2>04 // Platform Comparison Matrix</h2>
+      <div class="table-responsive">
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th>Feature</th>
+              <th>Claude Desktop</th>
+              <th>Antigravity IDE</th>
+              <th>Cursor Editor</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Primary Config</strong></td>
+              <td><code>claude_desktop_config.json</code></td>
+              <td><code>mcp_config.json</code></td>
+              <td>Settings UI / <code>.cursor/mcp.json</code></td>
+            </tr>
+            <tr>
+              <td><strong>Stdio (CLI/Local)</strong></td>
+              <td>✅ Yes</td>
+              <td>✅ Yes</td>
+              <td>✅ Yes</td>
+            </tr>
+            <tr>
+              <td><strong>SSE (Remote HTTP)</strong></td>
+              <td>✅ Yes (v0.7+)</td>
+              <td>✅ Yes (<code>serverUrl</code>)</td>
+              <td>✅ Yes (<code>sse</code> type)</td>
+            </tr>
+            <tr>
+              <td><strong>Project / Workspace Scope</strong></td>
+              <td>Via Claude Code</td>
+              <td>✅ Yes (Plugins &amp; <code>.agents</code>)</td>
+              <td>✅ Yes (<code>.cursor/mcp.json</code>)</td>
+            </tr>
+            <tr>
+              <td><strong>Tool Discovery Mode</strong></td>
+              <td>Eager Injection</td>
+              <td>Progressive / Lazy Loaded</td>
+              <td>Agent Context Injection</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- SECTION 5: SECURITY & BEST PRACTICES -->
+    <section class="section-card" id="security">
+      <h2>05 // Security Guidelines &amp; Best Practices</h2>
+      <div class="feature-grid">
+        <div class="feature-item">
+          <h4>🔒 Least Privilege Access</h4>
+          <p>For database MCP servers, always connect using <strong>read-only database credentials</strong> where possible (e.g. <code>DB_READONLY=true</code>) to prevent accidental deletions.</p>
+        </div>
+        <div class="feature-item">
+          <h4>🛡️ Protect Secret Tokens</h4>
+          <p>Never commit raw API keys or personal access tokens into public <code>.json</code> repository files. Always reference environment variables or local user profiles.</p>
+        </div>
+        <div class="feature-item">
+          <h4>⚡ Context Window Efficiency</h4>
+          <p>Only enable MCP servers that are directly relevant to your current project. Adding dozens of servers injects heavy JSON schemas into prompts, which increases latency and token costs.</p>
+        </div>
+        <div class="feature-item">
+          <h4>📁 Path Scoping</h4>
+          <p>When running filesystem MCP servers, strictly restrict allowed directories to your current project folder to prevent unauthorized directory traversal.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER CTA -->
+    <div style="text-align: center; margin-top: 48px; padding: 48px; background: var(--card-bg); border: 2px solid var(--accent); box-shadow: 6px 6px 0px 0px rgba(0,0,0,1);">
+      <div class="badge-pill">Ready to Supercharge Your Agents</div>
+      <h2 style="font-family: var(--font-display); font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 800; text-transform: uppercase; letter-spacing: -0.04em; color: var(--fg); margin: 16px 0;">
+        Build Custom MCP Integrations
+      </h2>
+      <p style="color: var(--muted-fg); max-width: 640px; margin: 0 auto 24px auto; font-size: 15px;">
+        Combine the power of OmniStore CMS Developer APIs with MCP servers to create automated store management, continuous catalog sync, and intelligent inventory alerts.
+      </p>
+      <div style="display: flex; justify-content: center; gap: 16px; flex-wrap: wrap;">
+        <a href="developer-guide.html" class="btn-secondary" style="padding: 14px 28px; font-size: 13px;">Read Developer Guide</a>
+        <a href="docs.html" class="btn-primary" style="padding: 14px 28px; font-size: 13px;">
+          <span>Explore API Docs ↗</span>
+        </a>
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+
+      if (event && event.target) {
+        event.target.classList.add('active');
+      }
+      const activeContent = document.getElementById('tab-' + tabId);
+      if (activeContent) {
+        activeContent.classList.add('active');
+      }
+    }
+  </script>
+</body>
+</html>

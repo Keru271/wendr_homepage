@@ -1,0 +1,1609 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Developer REST API Documentation (/api/v1) — OmniStore CMS</title>
+  <meta name="description"
+    content="Complete interactive API reference and integration guide for OmniStore Developer API (/api/v1). Store metadata, products, collections, search, cart, checkout, and customer endpoints.">
+  <link rel="stylesheet" href="index.css">
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+  <style>
+    /* Inline helper enhancements for docs */
+    .docs-nav-link.active-scroll {
+      background: var(--accent) !important;
+      color: var(--accent-fg) !important;
+      font-weight: 700 !important;
+    }
+    .json-key { color: #38bdf8; }
+    .json-string { color: #86efac; }
+    .json-number { color: #fde047; }
+    .json-boolean { color: #f472b6; }
+    .json-null { color: #94a3b8; }
+    .tab-nav {
+      display: flex;
+      gap: 6px;
+      padding: 8px 16px;
+      background: var(--muted);
+      border-bottom: 1px solid var(--border);
+    }
+    .tab-btn-doc {
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--muted-fg);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 10px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .tab-btn-doc.active {
+      background: var(--bg);
+      border-color: var(--border);
+      color: var(--accent);
+    }
+    .tab-pane {
+      display: none;
+    }
+    .tab-pane.active {
+      display: block;
+    }
+    .sandbox-card {
+      background: var(--card-bg);
+      border: 2px solid var(--border);
+      padding: 16px 20px;
+      margin: 16px 0;
+    }
+    .sandbox-input {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      width: 100%;
+      background: var(--bg);
+      color: var(--fg);
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Floating Navigation Bar -->
+  <div class="navbar-wrapper">
+    <nav class="navbar">
+      <div class="nav-container">
+        <!-- Logo Lockup -->
+        <a href="index.html" class="brand-logo">
+          <div class="brand-icon-box">⚡</div>
+          <span class="brand-text">OMNISTORE // CMS</span>
+        </a>
+
+        <!-- Centered Nav Links -->
+        <ul class="nav-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="index.html#features">Features</a></li>
+          <li><a href="index.html#developer-api">API Engine</a></li>
+          <li><a href="developer-guide.html">Dev Guide</a></li>
+          <li><a href="docs.html" class="active">REST Docs</a></li>
+          <li><a href="index.html#pricing">Pricing</a></li>
+        </ul>
+
+        <!-- Nav Actions -->
+        <div class="nav-actions">
+          <a href="http://localhost:3000/developer" class="btn btn-secondary" style="font-size: 11px; padding: 8px 14px;">Developer Studio</a>
+          <a href="#quick-start" class="btn btn-primary" style="font-size: 11px; padding: 8px 16px;">
+            <span>Quick Start ↗</span>
+          </a>
+        </div>
+      </div>
+    </nav>
+  </div>
+
+  <!-- Mobile Sidebar Toggle -->
+  <div style="padding: 12px 24px; background: var(--card-bg); border-bottom: 2px solid var(--border); display: flex; align-items: center; justify-content: space-between;" class="hide-on-desktop">
+    <button onclick="toggleMobileSidebar()" class="btn btn-secondary" style="padding: 6px 12px; font-size: 11px;">
+      ☰ API Endpoints
+    </button>
+    <span style="font-family: var(--font-mono); font-size: 12px; font-weight: 700; color: var(--accent);">
+      BASE: http://localhost:5002/api/v1
+    </span>
+  </div>
+
+  <!-- Docs Layout: Sidebar + Main Content -->
+  <div class="container docs-layout">
+
+    <!-- Sticky Left Sidebar Navigation -->
+    <aside class="docs-sidebar" id="docs-sidebar">
+      <input type="text" id="docs-search-input" class="docs-sidebar-search" placeholder="🔍 Filter endpoints..." onkeyup="filterDocsNav()">
+
+      <!-- Section: Getting Started -->
+      <div class="docs-nav-group">
+        <div class="docs-group-title">Getting Started</div>
+        <a href="#quick-start" class="docs-nav-link">🚀 Quick Start & Base URL</a>
+        <a href="#authentication" class="docs-nav-link">🔐 API Authentication</a>
+        <a href="#cart-flow" class="docs-nav-link">🛒 Cart-to-Checkout Flow</a>
+        <a href="#errors" class="docs-nav-link">⚠️ Error Handling Matrix</a>
+      </div>
+
+      <!-- Section: Store API -->
+      <div class="docs-nav-group">
+        <div class="docs-group-title">1. Store API</div>
+        <a href="#get-store" class="docs-nav-link">
+          <span class="method-pill get">GET</span>
+          <span>/api/v1/store</span>
+        </a>
+      </div>
+
+      <!-- Section: Products API -->
+      <div class="docs-nav-group">
+        <div class="docs-group-title">2. Products API</div>
+        <a href="#get-products" class="docs-nav-link">
+          <span class="method-pill get">GET</span>
+          <span>/api/v1/products</span>
+        </a>
+        <a href="#get-product-by-id" class="docs-nav-link">
+          <span class="method-pill get">GET</span>
+          <span>/api/v1/products/:id</span>
+        </a>
+      </div>
+
+      <!-- Section: Collections API -->
+      <div class="docs-nav-group">
+        <div class="docs-group-title">3. Collections API</div>
+        <a href="#get-collections" class="docs-nav-link">
+          <span class="method-pill get">GET</span>
+          <span>/api/v1/collections</span>
+        </a>
+        <a href="#get-collection-by-id" class="docs-nav-link">
+          <span class="method-pill get">GET</span>
+          <span>/api/v1/collections/:id</span>
+        </a>
+        <a href="#get-collection-products" class="docs-nav-link">
+          <span class="method-pill get">GET</span>
+          <span>/collections/:id/products</span>
+        </a>
+      </div>
+
+      <!-- Section: Categories API -->
+      <div class="docs-nav-group">
+        <div class="docs-group-title">4. Categories API</div>
+        <a href="#get-categories" class="docs-nav-link">
+          <span class="method-pill get">GET</span>
+          <span>/api/v1/categories</span>
+        </a>
+        <a href="#get-category-by-id" class="docs-nav-link">
+          <span class="method-pill get">GET</span>
+          <span>/api/v1/categories/:id</span>
+        </a>
+      </div>
+
+      <!-- Section: Unified Search API -->
+      <div class="docs-nav-group">
+        <div class="docs-group-title">5. Search API</div>
+        <a href="#search" class="docs-nav-link">
+          <span class="method-pill get">GET</span>
+          <span>/api/v1/search</span>
+        </a>
+      </div>
+
+      <!-- Section: Cart Engine API -->
+      <div class="docs-nav-group">
+        <div class="docs-group-title">6. Cart Engine API</div>
+        <a href="#post-cart" class="docs-nav-link">
+          <span class="method-pill post">POST</span>
+          <span>/api/v1/cart</span>
+        </a>
+        <a href="#get-cart" class="docs-nav-link">
+          <span class="method-pill get">GET</span>
+          <span>/api/v1/cart/:id</span>
+        </a>
+        <a href="#add-cart-item" class="docs-nav-link">
+          <span class="method-pill post">POST</span>
+          <span>/api/v1/cart/:id/items</span>
+        </a>
+        <a href="#patch-cart-item" class="docs-nav-link">
+          <span class="method-pill patch">PATCH</span>
+          <span>/cart/:id/items/:itemId</span>
+        </a>
+        <a href="#delete-cart-item" class="docs-nav-link">
+          <span class="method-pill delete">DEL</span>
+          <span>/cart/:id/items/:itemId</span>
+        </a>
+      </div>
+
+      <!-- Section: Checkout API -->
+      <div class="docs-nav-group">
+        <div class="docs-group-title">7. Checkout API</div>
+        <a href="#post-checkout" class="docs-nav-link">
+          <span class="method-pill post">POST</span>
+          <span>/api/v1/checkout</span>
+        </a>
+        <a href="#get-checkout" class="docs-nav-link">
+          <span class="method-pill get">GET</span>
+          <span>/api/v1/checkout/:id</span>
+        </a>
+      </div>
+
+      <!-- Section: Payments API (Developer API) -->
+      <div class="docs-nav-group">
+        <div class="docs-group-title">8. Payments API</div>
+        <a href="#payment-methods" class="docs-nav-link">
+          <span class="method-pill get">GET</span>
+          <span>/payments/methods</span>
+        </a>
+        <a href="#payment-process" class="docs-nav-link">
+          <span class="method-pill post">POST</span>
+          <span>/payments/process</span>
+        </a>
+        <a href="#payment-status" class="docs-nav-link">
+          <span class="method-pill get">GET</span>
+          <span>/payments/:id</span>
+        </a>
+        <a href="#payment-simulate" class="docs-nav-link">
+          <span class="method-pill post">POST</span>
+          <span>/payments/simulate</span>
+        </a>
+      </div>
+
+      <!-- Section: Customer API -->
+      <div class="docs-nav-group">
+        <div class="docs-group-title">9. Customer API</div>
+        <a href="#customer-register" class="docs-nav-link">
+          <span class="method-pill post">POST</span>
+          <span>/api/v1/customers</span>
+        </a>
+        <a href="#customer-login" class="docs-nav-link">
+          <span class="method-pill post">POST</span>
+          <span>/customers/login</span>
+        </a>
+        <a href="#customer-me" class="docs-nav-link">
+          <span class="method-pill get">GET</span>
+          <span>/customers/me</span>
+        </a>
+        <a href="#customer-me-patch" class="docs-nav-link">
+          <span class="method-pill patch">PATCH</span>
+          <span>/customers/me</span>
+        </a>
+      </div>
+
+      <!-- Section: Webhooks -->
+      <div class="docs-nav-group">
+        <div class="docs-group-title">10. Webhooks & Events</div>
+        <a href="#webhooks" class="docs-nav-link">⚡ Storefront Events</a>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="docs-content">
+
+      <!-- HEADER BANNER -->
+      <div style="margin-bottom: 40px; padding-bottom: 24px; border-bottom: 2px solid var(--color-forest-ink);">
+        <div class="tagline-badge" style="background: var(--color-highlighter-yellow);">📚 Developer REST API Specification</div>
+        <h1 style="font-family: var(--font-bricolage-grotesque); font-size: clamp(2rem, 4vw, 2.8rem); font-weight: 800; line-height: 1.1; margin: 12px 0 8px 0;">
+          Developer Storefront API Documentation
+        </h1>
+        <p style="font-size: 16px; opacity: 0.85; line-height: 1.6;">
+          Complete technical reference for building on top of OmniStore. All endpoints run on <strong>port 5002</strong> under the prefix <code>/api/v1</code>, authenticated via your public storefront key.
+        </p>
+      </div>
+
+      <!-- ── SECTION: QUICK START ─────────────────────────────────────────── -->
+      <section class="doc-section" id="quick-start">
+        <h2 style="font-family: var(--font-bricolage-grotesque); font-size: 1.8rem; font-weight: 800; margin-bottom: 12px;">
+          🚀 Quick Start & Base URL
+        </h2>
+        <p>
+          Every store deployed on the platform exposes the Developer API. In local development, the API listens on port <strong>5002</strong>. In production, requests are routed through your store's custom domain or platform subdomain.
+        </p>
+
+        <div class="code-block" style="background: #ffffff; border: 1px solid var(--color-forest-ink); border-radius: 8px; padding: 14px 18px; margin: 16px 0;">
+          <div style="font-size: 11px; text-transform: uppercase; font-weight: 700; color: #64748b; margin-bottom: 6px;">Base Endpoint URL</div>
+          <div style="font-family: var(--font-roboto-mono); font-size: 15px; font-weight: 700; color: #166534;">
+            http://localhost:5002/api/v1
+          </div>
+        </div>
+
+        <h3 style="font-family: var(--font-bricolage-grotesque); font-size: 1.2rem; font-weight: 800; margin: 24px 0 10px 0;">
+          Self-Describing API Root
+        </h3>
+        <p>
+          Send a GET request to <code>/api/v1/</code> with your key to retrieve the live directory of available endpoints and API metadata:
+        </p>
+
+        <div class="response-card">
+          <div class="response-header">
+            <span class="status-badge status-200">GET /api/v1/ • 200 OK</span>
+            <button class="terminal-copy-btn" onclick="copySnippet('api-root-res')">Copy JSON</button>
+          </div>
+          <div class="terminal-body">
+            <pre id="api-root-res">{
+  <span class="json-key">"name"</span>: <span class="json-string">"Shoppify Developer API"</span>,
+  <span class="json-key">"version"</span>: <span class="json-string">"v1"</span>,
+  <span class="json-key">"base_url"</span>: <span class="json-string">"/api/v1"</span>,
+  <span class="json-key">"authentication"</span>: {
+    <span class="json-key">"storefront_key"</span>: <span class="json-string">"Pass your Storefront API key in X-Storefront-Key header (pk_live_xxx)"</span>,
+    <span class="json-key">"customer_token"</span>: <span class="json-string">"For customer-specific endpoints, pass: Authorization: Bearer &lt;customer_token&gt;"</span>
+  }
+}</pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── SECTION: AUTHENTICATION ──────────────────────────────────────── -->
+      <section class="doc-section" id="authentication">
+        <h2 style="font-family: var(--font-bricolage-grotesque); font-size: 1.8rem; font-weight: 800; margin-bottom: 12px;">
+          🔐 API Authentication
+        </h2>
+        <p>
+          Authentication ensures requests are routed to the appropriate store tenant and that rate limits are enforced. The Developer API utilizes two distinct authentication tiers:
+        </p>
+
+        <table class="doc-table">
+          <thead>
+            <tr>
+              <th>Auth Type</th>
+              <th>Header Name</th>
+              <th>Example Value</th>
+              <th>Applies To</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Public Storefront Key</strong></td>
+              <td><code>X-Storefront-Key</code></td>
+              <td><code>pk_live_9a8b7c6d5e4f3a2b1c...</code></td>
+              <td><strong>Every Request</strong> (Store, Products, Collections, Cart, Checkout)</td>
+            </tr>
+            <tr>
+              <td><strong>Customer Session Token</strong></td>
+              <td><code>Authorization</code></td>
+              <td><code>Bearer eyJhbGciOiJIUzI1...</code></td>
+              <td>Customer authenticated endpoints (<code>/customers/me</code>)</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div style="background: var(--color-whisper-gray); border-left: 4px solid var(--color-terracotta); padding: 14px 18px; border-radius: 0 8px 8px 0; margin: 20px 0; font-size: 13px;">
+          <strong>Security Guarantee:</strong> <code>pk_live_...</code> keys are strictly scoped to public-facing storefront endpoints. They cannot perform administrative store updates, delete orders, view merchant bank payouts, or modify merchant credentials.
+        </div>
+
+        <!-- API Tier Requirement Notice -->
+        <div style="background: rgba(99, 102, 241, 0.08); border: 1px solid rgba(99, 102, 241, 0.25); border-left: 4px solid #6366f1; padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 20px 0; font-size: 13px; color: #1e1b4b;">
+          <div style="display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 14px; margin-bottom: 4px;">
+            <span>💳 Plan Requirement: API Tier Add-on (1,000/month)</span>
+          </div>
+          <p style="margin: 0; line-height: 1.6;">
+            The <strong>API Tier (1,000/month)</strong> is an independent add-on dedicated strictly to Developer API access. Subscribing to it unlocks the complete Developer Storefront API (<code>/api/v1/*</code>), API key creation, and Webhooks <strong>without altering your current base tier</strong> (e.g. your store remains on Free Starter, Basic, or Growth). Stores without the API Tier add-on receive HTTP <code>403 Forbidden</code> with code <code>API_TIER_REQUIRED</code>. You can activate the API Tier anytime in <strong>Dashboard → Billing</strong>.
+          </p>
+        </div>
+      </section>
+
+      <!-- ── SECTION: CART-TO-CHECKOUT FLOW ───────────────────────────────── -->
+      <section class="doc-section" id="cart-flow">
+        <h2 style="font-family: var(--font-bricolage-grotesque); font-size: 1.8rem; font-weight: 800; margin-bottom: 12px;">
+          🛒 End-to-End Integration Walkthrough
+        </h2>
+        <p>
+          Here is how to implement a complete, headless shopping journey from product discovery to payment capture:
+        </p>
+
+        <div style="display: flex; flex-direction: column; gap: 14px; margin: 20px 0;">
+          <div style="display: flex; gap: 14px; background: #ffffff; padding: 16px; border: 1px solid var(--color-forest-ink); border-radius: 8px;">
+            <div style="width: 28px; height: 28px; border-radius: 50%; background: var(--color-highlighter-yellow); font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">1</div>
+            <div>
+              <strong>Create an Empty Cart</strong>: Call <code>POST /api/v1/cart</code>. Store the returned <code>cart_id</code> in the user's browser (e.g. <code>localStorage</code>).
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 14px; background: #ffffff; padding: 16px; border: 1px solid var(--color-forest-ink); border-radius: 8px;">
+            <div style="width: 28px; height: 28px; border-radius: 50%; background: var(--color-sticky-note-teal); font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">2</div>
+            <div>
+              <strong>Add Items to Cart</strong>: Call <code>POST /api/v1/cart/:id/items</code> with <code>product_id</code>, <code>variant_id</code> (if applicable), and <code>quantity</code>. Real-time inventory is verified.
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 14px; background: #ffffff; padding: 16px; border: 1px solid var(--color-forest-ink); border-radius: 8px;">
+            <div style="width: 28px; height: 28px; border-radius: 50%; background: var(--color-sticky-note-mint); font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">3</div>
+            <div>
+              <strong>Initiate Checkout Session</strong>: Call <code>POST /api/v1/checkout</code> with <code>cart_id</code>, customer email/name, and shipping address. The system computes subtotal, taxes, shipping, coupon discounts, and returns live payment gateway identifiers (Razorpay Order ID, Stripe Publishable Key).
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 14px; background: #ffffff; padding: 16px; border: 1px solid var(--color-forest-ink); border-radius: 8px;">
+            <div style="width: 28px; height: 28px; border-radius: 50%; background: var(--color-sticky-note-blush); font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">4</div>
+            <div>
+              <strong>Capture Payment & Listen for Webhook</strong>: Initialize Razorpay.js or Stripe Elements using the returned IDs. When payment captures, your backend receives a signed <code>checkout.completed</code> webhook!
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── SECTION: ERROR CODES MATRIX ─────────────────────────────────── -->
+      <section class="doc-section" id="errors">
+        <h2 style="font-family: var(--font-bricolage-grotesque); font-size: 1.8rem; font-weight: 800; margin-bottom: 12px;">
+          ⚠️ Error Handling Matrix
+        </h2>
+        <p>
+          All error responses return a standardized JSON envelope with an <code>error</code> category and a descriptive <code>message</code>:
+        </p>
+
+        <div class="code-block" style="background: #020617; border-radius: 6px; padding: 12px; margin: 12px 0;">
+          <pre style="color: #f87171;">{
+  <span class="json-key">"error"</span>: <span class="json-string">"Out of Stock"</span>,
+  <span class="json-key">"message"</span>: <span class="json-string">"Only 1 unit(s) of \"AeroPulse Headphones\" are available."</span>
+}</pre>
+        </div>
+
+        <table class="doc-table">
+          <thead>
+            <tr>
+              <th>Status Code</th>
+              <th>Error Category</th>
+              <th>Typical Cause</th>
+              <th>Resolution Guide</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="status-badge status-400">400 Bad Request</span></td>
+              <td><code>Bad Request</code> / <code>Out of Stock</code></td>
+              <td>Missing required fields, requested quantity exceeds stock, cart is empty.</td>
+              <td>Inspect <code>message</code> field. Adjust quantity or supply required parameters.</td>
+            </tr>
+            <tr>
+              <td><span class="status-badge status-400">401 Unauthorized</span></td>
+              <td><code>Unauthorized</code></td>
+              <td>Missing or malformed <code>X-Storefront-Key</code>, or expired customer token.</td>
+              <td>Ensure key begins with <code>pk_live_</code> or <code>pk_test_</code>. Re-authenticate customer.</td>
+            </tr>
+            <tr>
+              <td><span class="status-badge status-400">403 Forbidden</span></td>
+              <td><code>Forbidden</code></td>
+              <td>Enterprise plan upgrade required, or customer JWT used for admin task.</td>
+              <td>Check store plan in Merchant Admin > Pricing & Billing.</td>
+            </tr>
+            <tr>
+              <td><span class="status-badge status-404">404 Not Found</span></td>
+              <td><code>Not Found</code></td>
+              <td>Product ID, category slug, or cart token does not exist.</td>
+              <td>Verify slug or ID against <code>/api/v1/products</code> or <code>/api/v1/collections</code>.</td>
+            </tr>
+            <tr>
+              <td><span class="status-badge status-400">409 Conflict</span></td>
+              <td><code>Conflict</code></td>
+              <td>Customer email address already registered.</td>
+              <td>Prompt user to login via <code>POST /api/v1/customers/login</code> instead.</td>
+            </tr>
+            <tr>
+              <td><span class="status-badge status-500">500 Server Error</span></td>
+              <td><code>Internal Server Error</code></td>
+              <td>Database connectivity interruption or unhandled exception.</td>
+              <td>Implement exponential backoff retry. Contact technical support if persistent.</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- ── 1. STORE API ────────────────────────────────────────────────── -->
+      <section class="doc-section" id="get-store">
+        <div class="doc-endpoint-header">
+          <span class="method-pill get">GET</span>
+          <span class="doc-endpoint-path">/api/v1/store</span>
+          <span class="doc-auth-badge">X-Storefront-Key</span>
+          <span class="pill-scope">store.read</span>
+        </div>
+        <p>
+          Returns public-facing store profile data including name, currency, logo, banner announcements, theme primary colors, and social media URLs.
+        </p>
+
+        <!-- Tabs: Response, Failure, cURL, JS -->
+        <div class="response-card">
+          <div class="tab-nav">
+            <button class="tab-btn-doc active" onclick="switchDocTab(this, 'store-success')">200 Success</button>
+            <button class="tab-btn-doc" onclick="switchDocTab(this, 'store-failure')">401 Failure</button>
+            <button class="tab-btn-doc" onclick="switchDocTab(this, 'store-curl')">cURL</button>
+            <button class="tab-btn-doc" onclick="switchDocTab(this, 'store-js')">JavaScript</button>
+          </div>
+
+          <div class="terminal-body">
+            <div class="tab-pane active" id="store-success">
+              <pre>{
+  <span class="json-key">"data"</span>: {
+    <span class="json-key">"id"</span>: <span class="json-string">"store_7f8a9b0c"</span>,
+    <span class="json-key">"name"</span>: <span class="json-string">"My Fashion Store"</span>,
+    <span class="json-key">"slug"</span>: <span class="json-string">"my-fashion-store"</span>,
+    <span class="json-key">"currency"</span>: <span class="json-string">"INR"</span>,
+    <span class="json-key">"country"</span>: <span class="json-string">"IN"</span>,
+    <span class="json-key">"logo"</span>: <span class="json-string">"https://cdn.example.com/logo.webp"</span>,
+    <span class="json-key">"theme"</span>: {
+      <span class="json-key">"activeTemplate"</span>: <span class="json-string">"nova"</span>,
+      <span class="json-key">"primaryColor"</span>: <span class="json-string">"#4f46e5"</span>,
+      <span class="json-key">"secondaryColor"</span>: <span class="json-string">"#06b6d4"</span>
+    },
+    <span class="json-key">"announcement"</span>: <span class="json-string">"Free shipping on all prepaid orders above ₹999!"</span>,
+    <span class="json-key">"social_links"</span>: {
+      <span class="json-key">"instagram"</span>: <span class="json-string">"https://instagram.com/myfashion"</span>,
+      <span class="json-key">"twitter"</span>: <span class="json-string">"https://twitter.com/myfashion"</span>
+    }
+  }
+}</pre>
+            </div>
+
+            <div class="tab-pane" id="store-failure">
+              <pre>{
+  <span class="json-key">"error"</span>: <span class="json-string">"Unauthorized"</span>,
+  <span class="json-key">"message"</span>: <span class="json-string">"Missing or invalid API key. Pass your Storefront API key in the X-Storefront-Key header."</span>,
+  <span class="json-key">"docs"</span>: <span class="json-string">"/api/v1/docs"</span>
+}</pre>
+            </div>
+
+            <div class="tab-pane" id="store-curl">
+              <pre>curl -X GET "http://localhost:5002/api/v1/store" \
+  -H "X-Storefront-Key: pk_live_9a8b7c6d5e4f3a2b1c0d9e8f7a6b5c4d94f2" \
+  -H "Content-Type: application/json"</pre>
+            </div>
+
+            <div class="tab-pane" id="store-js">
+              <pre>const res = await fetch("http://localhost:5002/api/v1/store", {
+  headers: {
+    "X-Storefront-Key": "pk_live_9a8b7c6d5e4f3a2b1c0d9e8f7a6b5c4d94f2"
+  }
+});
+const { data } = await res.json();
+console.log(data.name, data.currency, data.theme);</pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── 2. PRODUCTS API ─────────────────────────────────────────────── -->
+      <section class="doc-section" id="get-products">
+        <div class="doc-endpoint-header">
+          <span class="method-pill get">GET</span>
+          <span class="doc-endpoint-path">/api/v1/products</span>
+          <span class="doc-auth-badge">X-Storefront-Key</span>
+          <span class="pill-scope">products.read</span>
+        </div>
+        <p>
+          Queries the store catalog with full-text search, category/collection filtering, price brackets, stock availability, and multi-field sorting.
+        </p>
+
+        <h4 style="font-size: 13px; font-weight: 700; text-transform: uppercase; margin: 16px 0 6px 0; color: #475569;">
+          Query Parameters
+        </h4>
+        <table class="doc-table">
+          <thead>
+            <tr>
+              <th>Parameter</th>
+              <th>Type</th>
+              <th>Default</th>
+              <th>Description & Values</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="param-name">search / q</span></td>
+              <td><code>string</code></td>
+              <td><code>""</code></td>
+              <td>Full-text search query across title, description, SKU, brand, and tags.</td>
+            </tr>
+            <tr>
+              <td><span class="param-name">category</span></td>
+              <td><code>string</code></td>
+              <td><code>null</code></td>
+              <td>Filter by category title (e.g. <code>Footwear</code>, <code>Electronics</code>).</td>
+            </tr>
+            <tr>
+              <td><span class="param-name">collection</span></td>
+              <td><code>string</code></td>
+              <td><code>null</code></td>
+              <td>Filter by collection name (e.g. <code>Summer Sale</code>).</td>
+            </tr>
+            <tr>
+              <td><span class="param-name">minPrice / maxPrice</span></td>
+              <td><code>number</code></td>
+              <td><code>null</code></td>
+              <td>Filter products within a numerical price range.</td>
+            </tr>
+            <tr>
+              <td><span class="param-name">availability</span></td>
+              <td><code>string</code></td>
+              <td><code>all</code></td>
+              <td>Filter by stock: <code>in_stock</code> or <code>out_of_stock</code>.</td>
+            </tr>
+            <tr>
+              <td><span class="param-name">sort</span></td>
+              <td><code>string</code></td>
+              <td><code>newest</code></td>
+              <td><code>price_asc</code>, <code>price_desc</code>, <code>newest</code>, <code>name</code>.</td>
+            </tr>
+            <tr>
+              <td><span class="param-name">page / limit</span></td>
+              <td><code>number</code></td>
+              <td><code>1 / 20</code></td>
+              <td>Pagination controls (maximum limit is <code>100</code>).</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- Tabs -->
+        <div class="response-card">
+          <div class="tab-nav">
+            <button class="tab-btn-doc active" onclick="switchDocTab(this, 'products-success')">200 Success</button>
+            <button class="tab-btn-doc" onclick="switchDocTab(this, 'products-curl')">cURL</button>
+            <button class="tab-btn-doc" onclick="switchDocTab(this, 'products-js')">JavaScript</button>
+          </div>
+
+          <div class="terminal-body">
+            <div class="tab-pane active" id="products-success">
+              <pre>{
+  <span class="json-key">"data"</span>: [
+    {
+      <span class="json-key">"id"</span>: <span class="json-string">"prod_aero_101"</span>,
+      <span class="json-key">"name"</span>: <span class="json-string">"AeroPulse Wireless Headphones"</span>,
+      <span class="json-key">"slug"</span>: <span class="json-string">"aeropulse-wireless-headphones"</span>,
+      <span class="json-key">"price"</span>: <span class="json-number">2499.00</span>,
+      <span class="json-key">"compare_at_price"</span>: <span class="json-number">3499.00</span>,
+      <span class="json-key">"sku"</span>: <span class="json-string">"AERO-BLK-01"</span>,
+      <span class="json-key">"image"</span>: <span class="json-string">"https://cdn.example.com/headphone-main.webp"</span>,
+      <span class="json-key">"available"</span>: <span class="json-boolean">true</span>,
+      <span class="json-key">"inventory"</span>: <span class="json-number">47</span>,
+      <span class="json-key">"brand"</span>: <span class="json-string">"AeroAudio"</span>,
+      <span class="json-key">"category"</span>: <span class="json-string">"Electronics"</span>,
+      <span class="json-key">"variants"</span>: [
+        { <span class="json-key">"id"</span>: <span class="json-string">"var_black"</span>, <span class="json-key">"name"</span>: <span class="json-string">"Midnight Black"</span>, <span class="json-key">"price"</span>: <span class="json-number">2499</span>, <span class="json-key">"inventory"</span>: <span class="json-number">25</span> },
+        { <span class="json-key">"id"</span>: <span class="json-string">"var_silver"</span>, <span class="json-key">"name"</span>: <span class="json-string">"Lunar Silver"</span>, <span class="json-key">"price"</span>: <span class="json-number">2499</span>, <span class="json-key">"inventory"</span>: <span class="json-number">22</span> }
+      ]
+    }
+  ],
+  <span class="json-key">"pagination"</span>: {
+    <span class="json-key">"page"</span>: <span class="json-number">1</span>,
+    <span class="json-key">"limit"</span>: <span class="json-number">20</span>,
+    <span class="json-key">"total"</span>: <span class="json-number">148</span>,
+    <span class="json-key">"total_pages"</span>: <span class="json-number">8</span>,
+    <span class="json-key">"has_next"</span>: <span class="json-boolean">true</span>,
+    <span class="json-key">"has_prev"</span>: <span class="json-boolean">false</span>
+  }
+}</pre>
+            </div>
+
+            <div class="tab-pane" id="products-curl">
+              <pre>curl -X GET "http://localhost:5002/api/v1/products?collection=shirts&availability=in_stock&sort=price_asc&limit=20" \
+  -H "X-Storefront-Key: pk_live_YOUR_KEY"</pre>
+            </div>
+
+            <div class="tab-pane" id="products-js">
+              <pre>const res = await fetch("http://localhost:5002/api/v1/products?limit=12", {
+  headers: { "X-Storefront-Key": "pk_live_YOUR_KEY" }
+});
+const { data: products, pagination } = await res.json();</pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── 2B. GET PRODUCT BY ID ───────────────────────────────────────── -->
+      <section class="doc-section" id="get-product-by-id">
+        <div class="doc-endpoint-header">
+          <span class="method-pill get">GET</span>
+          <span class="doc-endpoint-path">/api/v1/products/:id</span>
+          <span class="doc-auth-badge">X-Storefront-Key</span>
+          <span class="pill-scope">products.read</span>
+        </div>
+        <p>
+          Looks up a single active product by either its unique UUID or its SEO-friendly <code>urlSlug</code>.
+        </p>
+
+        <h4 style="font-size: 13px; font-weight: 700; text-transform: uppercase; margin: 16px 0 6px 0; color: #475569;">Path Parameters</h4>
+        <table class="doc-table">
+          <thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><span class="param-name">id</span><span class="param-required">required</span></td>
+              <td><code>string</code></td>
+              <td>Product UUID (e.g. <code>prod_aero_101</code>) or URL slug (e.g. <code>aeropulse-wireless-headphones</code>).</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- Tabs -->
+        <div class="response-card">
+          <div class="tab-nav">
+            <button class="tab-btn-doc active" onclick="switchDocTab(this, 'product-id-success')">200 Success</button>
+            <button class="tab-btn-doc" onclick="switchDocTab(this, 'product-id-404')">404 Not Found</button>
+          </div>
+          <div class="terminal-body">
+            <div class="tab-pane active" id="product-id-success">
+              <pre>{
+  <span class="json-key">"data"</span>: {
+    <span class="json-key">"id"</span>: <span class="json-string">"prod_aero_101"</span>,
+    <span class="json-key">"name"</span>: <span class="json-string">"AeroPulse Wireless Headphones"</span>,
+    <span class="json-key">"slug"</span>: <span class="json-string">"aeropulse-wireless-headphones"</span>,
+    <span class="json-key">"price"</span>: <span class="json-number">2499.00</span>,
+    <span class="json-key">"description"</span>: <span class="json-string">"Active Noise Cancellation with 40-hour battery life."</span>,
+    <span class="json-key">"tax"</span>: { <span class="json-key">"taxable"</span>: <span class="json-boolean">true</span>, <span class="json-key">"rate"</span>: <span class="json-number">18.0</span> }
+  }
+}</pre>
+            </div>
+            <div class="tab-pane" id="product-id-404">
+              <pre>{
+  <span class="json-key">"error"</span>: <span class="json-string">"Not Found"</span>,
+  <span class="json-key">"message"</span>: <span class="json-string">"Product \"invalid-slug-99\" not found."</span>
+}</pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── 3. COLLECTIONS API ──────────────────────────────────────────── -->
+      <section class="doc-section" id="get-collections">
+        <div class="doc-endpoint-header">
+          <span class="method-pill get">GET</span>
+          <span class="doc-endpoint-path">/api/v1/collections</span>
+          <span class="doc-auth-badge">X-Storefront-Key</span>
+          <span class="pill-scope">collections.read</span>
+        </div>
+        <p>Lists all active collections with banner images, slugs, and description copy.</p>
+
+        <div class="response-card">
+          <div class="response-header">
+            <span class="status-badge status-200">200 OK</span>
+          </div>
+          <div class="terminal-body">
+            <pre>{
+  <span class="json-key">"data"</span>: [
+    {
+      <span class="json-key">"id"</span>: <span class="json-string">"col_summer_22"</span>,
+      <span class="json-key">"name"</span>: <span class="json-string">"Summer Collection 2026"</span>,
+      <span class="json-key">"slug"</span>: <span class="json-string">"summer-collection-2026"</span>,
+      <span class="json-key">"image"</span>: <span class="json-string">"https://cdn.example.com/summer.webp"</span>
+    }
+  ],
+  <span class="json-key">"total"</span>: <span class="json-number">6</span>
+}</pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── 5. SEARCH API ───────────────────────────────────────────────── -->
+      <section class="doc-section" id="search">
+        <div class="doc-endpoint-header">
+          <span class="method-pill get">GET</span>
+          <span class="doc-endpoint-path">/api/v1/search</span>
+          <span class="doc-auth-badge">X-Storefront-Key</span>
+          <span class="pill-scope">search.read</span>
+        </div>
+        <p>
+          Full-text unified search. Returns matching products, collections, and categories in a single request. Perfect for header search bars with instant dropdown autocomplete.
+        </p>
+
+        <h4 style="font-size: 13px; font-weight: 700; text-transform: uppercase; margin: 16px 0 6px 0; color: #475569;">Query Parameters</h4>
+        <table class="doc-table">
+          <thead><tr><th>Parameter</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><span class="param-name">q / search</span></td>
+              <td><code>string</code></td>
+              <td><span class="param-required">required</span></td>
+              <td>The search term (e.g. <code>shirt</code>, <code>shoes</code>, <code>electronics</code>).</td>
+            </tr>
+            <tr>
+              <td><span class="param-name">limit</span></td>
+              <td><code>number</code></td>
+              <td>Optional (Default: <code>10</code>)</td>
+              <td>Maximum product matches returned.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- Tabs -->
+        <div class="response-card">
+          <div class="tab-nav">
+            <button class="tab-btn-doc active" onclick="switchDocTab(this, 'search-success')">200 Response</button>
+            <button class="tab-btn-doc" onclick="switchDocTab(this, 'search-curl')">cURL</button>
+          </div>
+          <div class="terminal-body">
+            <div class="tab-pane active" id="search-success">
+              <pre>{
+  <span class="json-key">"query"</span>: <span class="json-string">"shirt"</span>,
+  <span class="json-key">"products"</span>: [
+    { <span class="json-key">"id"</span>: <span class="json-string">"prod_1"</span>, <span class="json-key">"name"</span>: <span class="json-string">"Casual Oxford Shirt"</span>, <span class="json-key">"price"</span>: <span class="json-number">1499.00</span>, <span class="json-key">"available"</span>: <span class="json-boolean">true</span> }
+  ],
+  <span class="json-key">"collections"</span>: [
+    { <span class="json-key">"id"</span>: <span class="json-string">"col_1"</span>, <span class="json-key">"name"</span>: <span class="json-string">"Shirts & Tops"</span>, <span class="json-key">"slug"</span>: <span class="json-string">"shirts-tops"</span> }
+  ],
+  <span class="json-key">"categories"</span>: [
+    { <span class="json-key">"id"</span>: <span class="json-string">"cat_1"</span>, <span class="json-key">"name"</span>: <span class="json-string">"Formal Wear"</span>, <span class="json-key">"slug"</span>: <span class="json-string">"formal-wear"</span> }
+  ],
+  <span class="json-key">"total"</span>: <span class="json-number">3</span>
+}</pre>
+            </div>
+            <div class="tab-pane" id="search-curl">
+              <pre>curl -X GET "http://localhost:5002/api/v1/search?q=shirt&limit=5" \
+  -H "X-Storefront-Key: pk_live_YOUR_KEY"</pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── 6. CART ENGINE API ──────────────────────────────────────────── -->
+      <section class="doc-section" id="post-cart">
+        <div class="doc-endpoint-header">
+          <span class="method-pill post">POST</span>
+          <span class="doc-endpoint-path">/api/v1/cart</span>
+          <span class="doc-auth-badge">X-Storefront-Key</span>
+          <span class="pill-scope">cart.write</span>
+        </div>
+        <p>
+          Initializes a new empty shopping cart session and returns a persistent <code>cart_id</code>.
+        </p>
+
+        <div class="response-card">
+          <div class="response-header">
+            <span class="status-badge status-201">201 Created</span>
+          </div>
+          <div class="terminal-body">
+            <pre>{
+  <span class="json-key">"data"</span>: {
+    <span class="json-key">"cart_id"</span>: <span class="json-string">"cart_8f9a0b1c2d3e4f5a"</span>,
+    <span class="json-key">"items"</span>: [],
+    <span class="json-key">"item_count"</span>: <span class="json-number">0</span>,
+    <span class="json-key">"subtotal"</span>: <span class="json-number">0.00</span>,
+    <span class="json-key">"currency"</span>: <span class="json-string">"INR"</span>
+  }
+}</pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- ADD CART ITEM -->
+      <section class="doc-section" id="add-cart-item">
+        <div class="doc-endpoint-header">
+          <span class="method-pill post">POST</span>
+          <span class="doc-endpoint-path">/api/v1/cart/:id/items</span>
+          <span class="doc-auth-badge">X-Storefront-Key</span>
+          <span class="pill-scope">cart.write</span>
+        </div>
+        <p>
+          Adds a product or specific variant to the specified cart. Verifies inventory stock in real time before persisting.
+        </p>
+
+        <h4 style="font-size: 13px; font-weight: 700; text-transform: uppercase; margin: 16px 0 6px 0; color: #475569;">Request Body (JSON)</h4>
+        <table class="doc-table">
+          <thead><tr><th>Field</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><span class="param-name">product_id</span></td>
+              <td><code>string</code></td>
+              <td><span class="param-required">required</span></td>
+              <td>Unique ID of the product.</td>
+            </tr>
+            <tr>
+              <td><span class="param-name">variant_id</span></td>
+              <td><code>string</code></td>
+              <td>Optional</td>
+              <td>Variant UUID (if product has sizes, colors, etc.).</td>
+            </tr>
+            <tr>
+              <td><span class="param-name">quantity</span></td>
+              <td><code>number</code></td>
+              <td>Optional (Default: <code>1</code>)</td>
+              <td>Units to purchase.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- Tabs -->
+        <div class="response-card">
+          <div class="tab-nav">
+            <button class="tab-btn-doc active" onclick="switchDocTab(this, 'add-cart-201')">201 Success</button>
+            <button class="tab-btn-doc" onclick="switchDocTab(this, 'add-cart-400')">400 Out of Stock</button>
+            <button class="tab-btn-doc" onclick="switchDocTab(this, 'add-cart-curl')">cURL Request</button>
+          </div>
+          <div class="terminal-body">
+            <div class="tab-pane active" id="add-cart-201">
+              <pre>{
+  <span class="json-key">"data"</span>: {
+    <span class="json-key">"cart_id"</span>: <span class="json-string">"cart_8f9a0b1c2d3e4f5a"</span>,
+    <span class="json-key">"items"</span>: [
+      {
+        <span class="json-key">"id"</span>: <span class="json-string">"item_3a2b1c"</span>,
+        <span class="json-key">"productId"</span>: <span class="json-string">"prod_aero_101"</span>,
+        <span class="json-key">"name"</span>: <span class="json-string">"AeroPulse Wireless Headphones"</span>,
+        <span class="json-key">"price"</span>: <span class="json-number">2499.00</span>,
+        <span class="json-key">"quantity"</span>: <span class="json-number">2</span>,
+        <span class="json-key">"totalPrice"</span>: <span class="json-number">4998.00</span>
+      }
+    ],
+    <span class="json-key">"item_count"</span>: <span class="json-number">2</span>,
+    <span class="json-key">"subtotal"</span>: <span class="json-number">4998.00</span>,
+    <span class="json-key">"currency"</span>: <span class="json-string">"INR"</span>
+  }
+}</pre>
+            </div>
+            <div class="tab-pane" id="add-cart-400">
+              <pre>{
+  <span class="json-key">"error"</span>: <span class="json-string">"Out of Stock"</span>,
+  <span class="json-key">"message"</span>: <span class="json-string">"\"AeroPulse Wireless Headphones\" is out of stock."</span>
+}</pre>
+            </div>
+            <div class="tab-pane" id="add-cart-curl">
+              <pre>curl -X POST "http://localhost:5002/api/v1/cart/cart_8f9a0b1c2d3e4f5a/items" \
+  -H "X-Storefront-Key: pk_live_YOUR_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "product_id": "prod_aero_101",
+    "quantity": 2
+  }'</pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── 7. CHECKOUT API ─────────────────────────────────────────────── -->
+      <section class="doc-section" id="post-checkout">
+        <div class="doc-endpoint-header">
+          <span class="method-pill post">POST</span>
+          <span class="doc-endpoint-path">/api/v1/checkout</span>
+          <span class="doc-auth-badge">X-Storefront-Key</span>
+          <span class="pill-scope">checkout.write</span>
+        </div>
+        <p>
+          Calculates comprehensive pricing (subtotal, automated tax evaluation, shipping fees, coupon code savings), validates inventory lock, and generates client-side payment gateway configurations. <strong>Merchant private secrets are never returned.</strong>
+        </p>
+
+        <h4 style="font-size: 13px; font-weight: 700; text-transform: uppercase; margin: 16px 0 6px 0; color: #475569;">Request Body (JSON)</h4>
+        <table class="doc-table">
+          <thead><tr><th>Field</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><span class="param-name">cart_id</span></td>
+              <td><code>string</code></td>
+              <td><span class="param-required">required</span></td>
+              <td>The cart identifier containing items.</td>
+            </tr>
+            <tr>
+              <td><span class="param-name">customer.email</span></td>
+              <td><code>string</code></td>
+              <td><span class="param-required">required</span></td>
+              <td>Customer email for order confirmation and receipts.</td>
+            </tr>
+            <tr>
+              <td><span class="param-name">customer.name</span></td>
+              <td><code>string</code></td>
+              <td>Optional</td>
+              <td>Full customer name.</td>
+            </tr>
+            <tr>
+              <td><span class="param-name">shipping_address.city</span></td>
+              <td><code>string</code></td>
+              <td><span class="param-required">required</span></td>
+              <td>Destination city.</td>
+            </tr>
+            <tr>
+              <td><span class="param-name">shipping_address.postal_code</span></td>
+              <td><code>string</code></td>
+              <td><span class="param-required">required</span></td>
+              <td>ZIP or postal code.</td>
+            </tr>
+            <tr>
+              <td><span class="param-name">coupon_code</span></td>
+              <td><code>string</code></td>
+              <td>Optional</td>
+              <td>Promotional discount code (e.g. <code>SAVE20</code>).</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- Tabs -->
+        <div class="response-card">
+          <div class="tab-nav">
+            <button class="tab-btn-doc active" onclick="switchDocTab(this, 'checkout-201')">201 Success Response</button>
+            <button class="tab-btn-doc" onclick="switchDocTab(this, 'checkout-400')">400 Failure</button>
+            <button class="tab-btn-doc" onclick="switchDocTab(this, 'checkout-curl')">cURL Request</button>
+          </div>
+          <div class="terminal-body">
+            <div class="tab-pane active" id="checkout-201">
+              <pre>{
+  <span class="json-key">"data"</span>: {
+    <span class="json-key">"checkout_id"</span>: <span class="json-string">"chk_9f8a7b6c5d4e"</span>,
+    <span class="json-key">"cart_id"</span>: <span class="json-string">"cart_8f9a0b1c2d3e4f5a"</span>,
+    <span class="json-key">"status"</span>: <span class="json-string">"PENDING"</span>,
+    <span class="json-key">"pricing"</span>: {
+      <span class="json-key">"subtotal"</span>: <span class="json-number">4998.00</span>,
+      <span class="json-key">"shipping"</span>: <span class="json-number">0.00</span>,
+      <span class="json-key">"tax"</span>: <span class="json-number">899.64</span>,
+      <span class="json-key">"discount"</span>: <span class="json-number">500.00</span>,
+      <span class="json-key">"grand_total"</span>: <span class="json-number">5397.64</span>,
+      <span class="json-key">"currency"</span>: <span class="json-string">"INR"</span>
+    },
+    <span class="json-key">"payment_gateways"</span>: {
+      <span class="json-key">"razorpay"</span>: {
+        <span class="json-key">"enabled"</span>: <span class="json-boolean">true</span>,
+        <span class="json-key">"key_id"</span>: <span class="json-string">"rzp_live_abc123"</span>,
+        <span class="json-key">"order_id"</span>: <span class="json-string">"order_M1N2O3P4"</span>,
+        <span class="json-key">"amount_paisa"</span>: <span class="json-number">539764</span>,
+        <span class="json-key">"currency"</span>: <span class="json-string">"INR"</span>
+      },
+      <span class="json-key">"stripe"</span>: {
+        <span class="json-key">"enabled"</span>: <span class="json-boolean">true</span>,
+        <span class="json-key">"publishable_key"</span>: <span class="json-string">"pk_live_sampleStripeKey"</span>,
+        <span class="json-key">"amount_cents"</span>: <span class="json-number">539764</span>
+      },
+      <span class="json-key">"cod"</span>: {
+        <span class="json-key">"enabled"</span>: <span class="json-boolean">true</span>,
+        <span class="json-key">"label"</span>: <span class="json-string">"Cash on Delivery"</span>,
+        <span class="json-key">"max_order_amount"</span>: <span class="json-number">10000</span>
+      }
+    },
+    <span class="json-key">"expires_at"</span>: <span class="json-string">"2026-08-30T11:00:00.000Z"</span>
+  }
+}</pre>
+            </div>
+
+            <div class="tab-pane" id="checkout-400">
+              <pre>{
+  <span class="json-key">"error"</span>: <span class="json-string">"Out of Stock"</span>,
+  <span class="json-key">"message"</span>: <span class="json-string">"Only 1 unit(s) of \"AeroPulse Headphones\" are available."</span>
+}</pre>
+            </div>
+
+            <div class="tab-pane" id="checkout-curl">
+              <pre>curl -X POST "http://localhost:5002/api/v1/checkout" \
+  -H "X-Storefront-Key: pk_live_YOUR_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "cart_id": "cart_8f9a0b1c2d3e4f5a",
+    "customer": {
+      "name": "Ananya Sharma",
+      "email": "ananya@example.com",
+      "phone": "+91 9876543210"
+    },
+    "shipping_address": {
+      "city": "Chennai",
+      "state": "Tamil Nadu",
+      "postal_code": "600001",
+      "country": "India"
+    },
+    "coupon_code": "WELCOME50"
+  }'</pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── 8. PAYMENTS API (DEVELOPER API) ─────────────────────────────── -->
+      <section class="doc-section" id="payment-methods">
+        <div class="doc-endpoint-header">
+          <span class="method-pill get">GET</span>
+          <span class="doc-endpoint-path">/api/v1/payments/methods</span>
+          <span class="doc-auth-badge">X-Storefront-Key</span>
+          <span class="pill-scope">payments.read</span>
+        </div>
+        <p>
+          Queries the active payment gateways and public configurations for the store (Razorpay, Stripe, Cash on Delivery, Developer Simulator). <strong>Merchant private secret keys are never exposed.</strong>
+        </p>
+
+        <!-- Tabs -->
+        <div class="response-card">
+          <div class="tab-nav">
+            <button class="tab-btn-doc active" onclick="switchDocTab(this, 'pm-methods-200')">200 OK</button>
+            <button class="tab-btn-doc" onclick="switchDocTab(this, 'pm-methods-curl')">cURL</button>
+            <button class="tab-btn-doc" onclick="switchDocTab(this, 'pm-methods-js')">JavaScript</button>
+          </div>
+          <div class="terminal-body">
+            <div class="tab-pane active" id="pm-methods-200">
+              <pre>{
+  <span class="json-key">"data"</span>: {
+    <span class="json-key">"currency"</span>: <span class="json-string">"INR"</span>,
+    <span class="json-key">"test_mode"</span>: <span class="json-boolean">false</span>,
+    <span class="json-key">"gateways"</span>: {
+      <span class="json-key">"razorpay"</span>: {
+        <span class="json-key">"enabled"</span>: <span class="json-boolean">true</span>,
+        <span class="json-key">"key_id"</span>: <span class="json-string">"rzp_live_9a8b7c6d5e4f3a"</span>,
+        <span class="json-key">"currencies"</span>: [<span class="json-string">"INR"</span>],
+        <span class="json-key">"supported_instruments"</span>: [<span class="json-string">"UPI"</span>, <span class="json-string">"CARDS"</span>, <span class="json-string">"NETBANKING"</span>, <span class="json-string">"WALLETS"</span>]
+      },
+      <span class="json-key">"stripe"</span>: {
+        <span class="json-key">"enabled"</span>: <span class="json-boolean">true</span>,
+        <span class="json-key">"publishable_key"</span>: <span class="json-string">"pk_live_sampleStripeKey"</span>,
+        <span class="json-key">"currencies"</span>: [<span class="json-string">"USD"</span>, <span class="json-string">"EUR"</span>, <span class="json-string">"INR"</span>],
+        <span class="json-key">"supported_instruments"</span>: [<span class="json-string">"CREDIT_CARD"</span>, <span class="json-string">"APPLE_PAY"</span>, <span class="json-string">"GOOGLE_PAY"</span>]
+      },
+      <span class="json-key">"cod"</span>: {
+        <span class="json-key">"enabled"</span>: <span class="json-boolean">true</span>,
+        <span class="json-key">"label"</span>: <span class="json-string">"Cash on Delivery"</span>,
+        <span class="json-key">"max_order_amount"</span>: <span class="json-number">10000</span>,
+        <span class="json-key">"fee"</span>: <span class="json-number">0</span>
+      },
+      <span class="json-key">"developer_simulator"</span>: {
+        <span class="json-key">"enabled"</span>: <span class="json-boolean">true</span>,
+        <span class="json-key">"label"</span>: <span class="json-string">"Developer Sandbox Simulator"</span>,
+        <span class="json-key">"supported_scenarios"</span>: [<span class="json-string">"SUCCESS"</span>, <span class="json-string">"INSUFFICIENT_FUNDS"</span>, <span class="json-string">"CARD_DECLINED"</span>, <span class="json-string">"GATEWAY_TIMEOUT"</span>]
+      }
+    }
+  }
+}</pre>
+            </div>
+            <div class="tab-pane" id="pm-methods-curl">
+              <pre>curl -X GET "http://localhost:5002/api/v1/payments/methods" \
+  -H "X-Storefront-Key: pk_live_YOUR_KEY"</pre>
+            </div>
+            <div class="tab-pane" id="pm-methods-js">
+              <pre>const res = await fetch("http://localhost:5002/api/v1/payments/methods", {
+  headers: { "X-Storefront-Key": "pk_live_YOUR_KEY" }
+});
+const { data } = await res.json();
+console.log("Available Gateways:", Object.keys(data.gateways));</pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PROCESS PAYMENT -->
+      <section class="doc-section" id="payment-process">
+        <div class="doc-endpoint-header">
+          <span class="method-pill post">POST</span>
+          <span class="doc-endpoint-path">/api/v1/payments/process</span>
+          <span class="doc-auth-badge">X-Storefront-Key</span>
+          <span class="pill-scope">payments.write</span>
+        </div>
+        <p>
+          <strong>Unified Payment Processing & Order Finalization Endpoint.</strong> Validates inventory stock, verifies the payment proof (or executes Cash on Delivery / Sandbox simulation), records the financial transaction audit, decrements product variant inventory in the database, clears the cart, and returns the confirmed order.
+        </p>
+
+        <h4 style="font-size: 13px; font-weight: 700; text-transform: uppercase; margin: 16px 0 6px 0; color: #475569;">Request Body (JSON)</h4>
+        <table class="doc-table">
+          <thead><tr><th>Field</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><span class="param-name">cart_id</span></td>
+              <td><code>string</code></td>
+              <td><span class="param-required">required</span></td>
+              <td>Cart identifier from <code>POST /api/v1/cart</code>.</td>
+            </tr>
+            <tr>
+              <td><span class="param-name">payment_method</span></td>
+              <td><code>string</code></td>
+              <td><span class="param-required">required</span></td>
+              <td><code>RAZORPAY</code>, <code>STRIPE</code>, <code>COD</code>, or <code>DEVELOPER_SIMULATOR</code>.</td>
+            </tr>
+            <tr>
+              <td><span class="param-name">customer</span></td>
+              <td><code>object</code></td>
+              <td><span class="param-required">required</span></td>
+              <td><code>{ "name": "...", "email": "...", "phone": "..." }</code>.</td>
+            </tr>
+            <tr>
+              <td><span class="param-name">shipping_address</span></td>
+              <td><code>object</code></td>
+              <td><span class="param-required">required</span></td>
+              <td><code>{ "line1": "...", "city": "...", "state": "...", "postal_code": "..." }</code>.</td>
+            </tr>
+            <tr>
+              <td><span class="param-name">payment_details</span></td>
+              <td><code>object</code></td>
+              <td>Conditional</td>
+              <td>
+                Razorpay: <code>{ razorpay_order_id, razorpay_payment_id, razorpay_signature }</code><br>
+                Stripe: <code>{ payment_intent_id }</code><br>
+                Simulator: <code>{ simulation_mode: "SUCCESS" | "FAILURE" }</code>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- Tabs -->
+        <div class="response-card">
+          <div class="tab-nav">
+            <button class="tab-btn-doc active" onclick="switchDocTab(this, 'pm-proc-201')">201 Order Created</button>
+            <button class="tab-btn-doc" onclick="switchDocTab(this, 'pm-proc-400')">400 Out of Stock</button>
+            <button class="tab-btn-doc" onclick="switchDocTab(this, 'pm-proc-402')">402 Card Declined</button>
+            <button class="tab-btn-doc" onclick="switchDocTab(this, 'pm-proc-curl')">cURL Request</button>
+            <button class="tab-btn-doc" onclick="switchDocTab(this, 'pm-proc-js')">JavaScript</button>
+          </div>
+          <div class="terminal-body">
+            <div class="tab-pane active" id="pm-proc-201">
+              <pre>{
+  <span class="json-key">"success"</span>: <span class="json-boolean">true</span>,
+  <span class="json-key">"message"</span>: <span class="json-string">"Payment verified and order created successfully."</span>,
+  <span class="json-key">"order"</span>: {
+    <span class="json-key">"id"</span>: <span class="json-string">"ord_uuid_8f9a0b1c"</span>,
+    <span class="json-key">"order_number"</span>: <span class="json-string">"ORD-82914-4921"</span>,
+    <span class="json-key">"status"</span>: <span class="json-string">"CONFIRMED"</span>,
+    <span class="json-key">"payment_status"</span>: <span class="json-string">"PAID"</span>,
+    <span class="json-key">"payment_method"</span>: <span class="json-string">"RAZORPAY"</span>,
+    <span class="json-key">"transaction_id"</span>: <span class="json-string">"pay_Q2W3E4R5T6"</span>,
+    <span class="json-key">"total_amount"</span>: <span class="json-number">4998.00</span>,
+    <span class="json-key">"subtotal_amount"</span>: <span class="json-number">4998.00</span>,
+    <span class="json-key">"tax_amount"</span>: <span class="json-number">0.00</span>,
+    <span class="json-key">"shipping_amount"</span>: <span class="json-number">0.00</span>,
+    <span class="json-key">"discount_amount"</span>: <span class="json-number">0.00</span>,
+    <span class="json-key">"currency"</span>: <span class="json-string">"INR"</span>,
+    <span class="json-key">"created_at"</span>: <span class="json-string">"2026-08-30T13:20:00.000Z"</span>
+  },
+  <span class="json-key">"customer"</span>: {
+    <span class="json-key">"name"</span>: <span class="json-string">"Ananya Sharma"</span>,
+    <span class="json-key">"email"</span>: <span class="json-string">"ananya@example.com"</span>,
+    <span class="json-key">"phone"</span>: <span class="json-string">"+91 9876543210"</span>
+  },
+  <span class="json-key">"items"</span>: [
+    {
+      <span class="json-key">"product_id"</span>: <span class="json-string">"prod_aero_101"</span>,
+      <span class="json-key">"name"</span>: <span class="json-string">"AeroPulse Wireless Headphones"</span>,
+      <span class="json-key">"price"</span>: <span class="json-number">2499.00</span>,
+      <span class="json-key">"quantity"</span>: <span class="json-number">2</span>,
+      <span class="json-key">"total"</span>: <span class="json-number">4998.00</span>
+    }
+  ]
+}</pre>
+            </div>
+            <div class="tab-pane" id="pm-proc-400">
+              <pre>{
+  <span class="json-key">"error"</span>: <span class="json-string">"Out of Stock"</span>,
+  <span class="json-key">"message"</span>: <span class="json-string">"Only 1 unit(s) of \"AeroPulse Headphones\" are available in stock."</span>
+}</pre>
+            </div>
+            <div class="tab-pane" id="pm-proc-402">
+              <pre>{
+  <span class="json-key">"error"</span>: <span class="json-string">"Payment Required"</span>,
+  <span class="json-key">"message"</span>: <span class="json-string">"The card was declined (INSUFFICIENT_FUNDS)."</span>,
+  <span class="json-key">"simulation"</span>: <span class="json-boolean">true</span>
+}</pre>
+            </div>
+            <div class="tab-pane" id="pm-proc-curl">
+              <pre>curl -X POST "http://localhost:5002/api/v1/payments/process" \
+  -H "X-Storefront-Key: pk_live_YOUR_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "cart_id": "cart_8f9a0b1c2d3e4f5a",
+    "payment_method": "DEVELOPER_SIMULATOR",
+    "customer": {
+      "name": "Ananya Sharma",
+      "email": "ananya@example.com"
+    },
+    "shipping_address": {
+      "line1": "Flat 4B, Emerald Heights",
+      "city": "Chennai",
+      "state": "Tamil Nadu",
+      "postal_code": "600001",
+      "country": "India"
+    },
+    "payment_details": {
+      "simulation_mode": "SUCCESS"
+    }
+  }'</pre>
+            </div>
+            <div class="tab-pane" id="pm-proc-js">
+              <pre>const res = await fetch("http://localhost:5002/api/v1/payments/process", {
+  method: "POST",
+  headers: {
+    "X-Storefront-Key": "pk_live_YOUR_KEY",
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    cart_id: cartId,
+    payment_method: "COD",
+    customer: { name: "Rohan Patel", email: "rohan@example.com" },
+    shipping_address: { line1: "123 MG Road", city: "Bangalore", postal_code: "560001" }
+  })
+});
+const result = await res.json();
+console.log("Created Order Number:", result.order.order_number);</pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PAYMENT STATUS CHECK -->
+      <section class="doc-section" id="payment-status">
+        <div class="doc-endpoint-header">
+          <span class="method-pill get">GET</span>
+          <span class="doc-endpoint-path">/api/v1/payments/:id</span>
+          <span class="doc-auth-badge">X-Storefront-Key</span>
+          <span class="pill-scope">payments.read</span>
+        </div>
+        <p>
+          Queries the financial payment and fulfillment status of an order by either its internal UUID or its display <code>orderNumber</code> (e.g. <code>ORD-82914-4921</code>).
+        </p>
+
+        <div class="response-card">
+          <div class="response-header">
+            <span class="status-badge status-200">200 OK</span>
+          </div>
+          <div class="terminal-body">
+            <pre>{
+  <span class="json-key">"data"</span>: {
+    <span class="json-key">"order_number"</span>: <span class="json-string">"ORD-82914-4921"</span>,
+    <span class="json-key">"payment_status"</span>: <span class="json-string">"PAID"</span>,
+    <span class="json-key">"fulfillment_status"</span>: <span class="json-string">"CONFIRMED"</span>,
+    <span class="json-key">"total_amount"</span>: <span class="json-number">4998.00</span>,
+    <span class="json-key">"currency"</span>: <span class="json-string">"INR"</span>,
+    <span class="json-key">"payment_method"</span>: <span class="json-string">"RAZORPAY"</span>,
+    <span class="json-key">"transaction_id"</span>: <span class="json-string">"pay_Q2W3E4R5T6"</span>,
+    <span class="json-key">"item_count"</span>: <span class="json-number">1</span>,
+    <span class="json-key">"created_at"</span>: <span class="json-string">"2026-08-30T13:20:00.000Z"</span>
+  }
+}</pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- DEVELOPER SIMULATOR -->
+      <section class="doc-section" id="payment-simulate">
+        <div class="doc-endpoint-header">
+          <span class="method-pill post">POST</span>
+          <span class="doc-endpoint-path">/api/v1/payments/simulate</span>
+          <span class="doc-auth-badge">X-Storefront-Key</span>
+          <span class="pill-scope">developer.sandbox</span>
+        </div>
+        <p>
+          <strong>Developer Sandbox Simulator.</strong> Allows developers to test payment failure handling, decline logic, card authorizations, and webhook payload parsing without live payment credentials.
+        </p>
+
+        <h4 style="font-size: 13px; font-weight: 700; text-transform: uppercase; margin: 16px 0 6px 0; color: #475569;">Scenarios Supported</h4>
+        <ul style="margin: 6px 0 16px 20px; font-size: 13px; line-height: 1.8;">
+          <li><code>SUCCESS</code>: Returns authorized transaction ID, authorization code, and mock <code>payment.completed</code> webhook payload.</li>
+          <li><code>INSUFFICIENT_FUNDS</code>: Returns HTTP 402 with <code>insufficient_funds</code> decline code.</li>
+          <li><code>CARD_DECLINED</code>: Returns HTTP 402 with generic card issuer decline.</li>
+          <li><code>GATEWAY_TIMEOUT</code>: Returns HTTP 504 with upstream gateway timeout simulation.</li>
+        </ul>
+
+        <div class="response-card">
+          <div class="tab-nav">
+            <button class="tab-btn-doc active" onclick="switchDocTab(this, 'sim-200')">Success Simulation</button>
+            <button class="tab-btn-doc" onclick="switchDocTab(this, 'sim-402')">Decline Simulation</button>
+            <button class="tab-btn-doc" onclick="switchDocTab(this, 'sim-curl')">cURL</button>
+          </div>
+          <div class="terminal-body">
+            <div class="tab-pane active" id="sim-200">
+              <pre>{
+  <span class="json-key">"success"</span>: <span class="json-boolean">true</span>,
+  <span class="json-key">"scenario"</span>: <span class="json-string">"SUCCESS"</span>,
+  <span class="json-key">"transaction_id"</span>: <span class="json-string">"sim_txn_1725024000_9a8b"</span>,
+  <span class="json-key">"authorization_code"</span>: <span class="json-string">"AUTH_821940"</span>,
+  <span class="json-key">"amount"</span>: <span class="json-number">2499.00</span>,
+  <span class="json-key">"currency"</span>: <span class="json-string">"INR"</span>,
+  <span class="json-key">"card"</span>: { <span class="json-key">"brand"</span>: <span class="json-string">"Visa"</span>, <span class="json-key">"last4"</span>: <span class="json-string">"4242"</span> },
+  <span class="json-key">"webhook_payload_preview"</span>: {
+    <span class="json-key">"event"</span>: <span class="json-string">"payment.completed"</span>,
+    <span class="json-key">"data"</span>: { <span class="json-key">"transactionId"</span>: <span class="json-string">"sim_txn_1725024000_9a8b"</span>, <span class="json-key">"status"</span>: <span class="json-string">"PAID"</span> }
+  }
+}</pre>
+            </div>
+            <div class="tab-pane" id="sim-402">
+              <pre>{
+  <span class="json-key">"error"</span>: <span class="json-string">"Payment Failed"</span>,
+  <span class="json-key">"code"</span>: <span class="json-string">"card_declined"</span>,
+  <span class="json-key">"decline_code"</span>: <span class="json-string">"insufficient_funds"</span>,
+  <span class="json-key">"message"</span>: <span class="json-string">"The card has insufficient funds to complete the purchase."</span>
+}</pre>
+            </div>
+            <div class="tab-pane" id="sim-curl">
+              <pre>curl -X POST "http://localhost:5002/api/v1/payments/simulate" \
+  -H "X-Storefront-Key: pk_live_YOUR_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "amount": 2499,
+    "scenario": "SUCCESS"
+  }'</pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── 9. CUSTOMERS API ────────────────────────────────────────────── -->
+      <section class="doc-section" id="customer-register">
+        <div class="doc-endpoint-header">
+          <span class="method-pill post">POST</span>
+          <span class="doc-endpoint-path">/api/v1/customers</span>
+          <span class="doc-auth-badge">X-Storefront-Key</span>
+          <span class="pill-scope">customer.write</span>
+        </div>
+        <p>Registers a new customer account and immediately issues a signed JWT customer session token.</p>
+
+        <!-- Tabs -->
+        <div class="response-card">
+          <div class="tab-nav">
+            <button class="tab-btn-doc active" onclick="switchDocTab(this, 'cust-reg-201')">201 Success</button>
+            <button class="tab-btn-doc" onclick="switchDocTab(this, 'cust-reg-409')">409 Conflict (Email Exists)</button>
+          </div>
+          <div class="terminal-body">
+            <div class="tab-pane active" id="cust-reg-201">
+              <pre>{
+  <span class="json-key">"data"</span>: {
+    <span class="json-key">"id"</span>: <span class="json-string">"cust_1a2b3c"</span>,
+    <span class="json-key">"name"</span>: <span class="json-string">"Ananya Sharma"</span>,
+    <span class="json-key">"email"</span>: <span class="json-string">"ananya@example.com"</span>
+  },
+  <span class="json-key">"customer_token"</span>: <span class="json-string">"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."</span>,
+  <span class="json-key">"message"</span>: <span class="json-string">"Account created successfully."</span>
+}</pre>
+            </div>
+            <div class="tab-pane" id="cust-reg-409">
+              <pre>{
+  <span class="json-key">"error"</span>: <span class="json-string">"Conflict"</span>,
+  <span class="json-key">"message"</span>: <span class="json-string">"An account with this email already exists."</span>
+}</pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CUSTOMER ME -->
+      <section class="doc-section" id="customer-me">
+        <div class="doc-endpoint-header">
+          <span class="method-pill get">GET</span>
+          <span class="doc-endpoint-path">/api/v1/customers/me</span>
+          <span class="doc-auth-badge">Bearer Token</span>
+          <span class="pill-scope">customer.read</span>
+        </div>
+        <p>
+          Returns the authenticated customer's personal profile, order history count, lifetime spend, and default shipping address.
+        </p>
+
+        <div style="margin: 12px 0;">
+          <strong>Required Headers:</strong>
+          <ul style="margin: 6px 0 16px 20px; font-family: var(--font-roboto-mono); font-size: 13px;">
+            <li>X-Storefront-Key: pk_live_...</li>
+            <li>Authorization: Bearer &lt;customer_token&gt;</li>
+          </ul>
+        </div>
+
+        <div class="response-card">
+          <div class="response-header">
+            <span class="status-badge status-200">200 OK</span>
+          </div>
+          <div class="terminal-body">
+            <pre>{
+  <span class="json-key">"data"</span>: {
+    <span class="json-key">"id"</span>: <span class="json-string">"cust_1a2b3c"</span>,
+    <span class="json-key">"name"</span>: <span class="json-string">"Ananya Sharma"</span>,
+    <span class="json-key">"email"</span>: <span class="json-string">"ananya@example.com"</span>,
+    <span class="json-key">"order_count"</span>: <span class="json-number">5</span>,
+    <span class="json-key">"total_spent"</span>: <span class="json-number">18950.00</span>,
+    <span class="json-key">"default_address"</span>: {
+      <span class="json-key">"city"</span>: <span class="json-string">"Chennai"</span>,
+      <span class="json-key">"state"</span>: <span class="json-string">"Tamil Nadu"</span>,
+      <span class="json-key">"postal_code"</span>: <span class="json-string">"600001"</span>,
+      <span class="json-key">"country"</span>: <span class="json-string">"India"</span>
+    }
+  }
+}</pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── 9. WEBHOOKS REFERENCE ───────────────────────────────────────── -->
+      <section class="doc-section" id="webhooks">
+        <h2 style="font-family: var(--font-bricolage-grotesque); font-size: 1.8rem; font-weight: 800; margin-bottom: 12px;">
+          ⚡ Storefront Webhooks & Event Streams
+        </h2>
+        <p>
+          Configure webhooks in the <strong>Merchant Dashboard > Developer > Webhooks</strong> tab to receive real-time event notifications sent via HTTP POST:
+        </p>
+
+        <table class="doc-table">
+          <thead><tr><th>Event Identifier</th><th>Group</th><th>Description & Trigger</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><code>checkout.completed</code></td>
+              <td>Order</td>
+              <td>Customer completes checkout session; payment captured.</td>
+            </tr>
+            <tr>
+              <td><code>payment.completed</code></td>
+              <td>Payment</td>
+              <td>Gateway transaction verified and confirmed.</td>
+            </tr>
+            <tr>
+              <td><code>order.confirmed</code></td>
+              <td>Order</td>
+              <td>Merchant confirms the order for fulfillment.</td>
+            </tr>
+            <tr>
+              <td><code>order.shipped</code></td>
+              <td>Logistics</td>
+              <td>Tracking number and courier carrier assigned.</td>
+            </tr>
+            <tr>
+              <td><code>order.delivered</code></td>
+              <td>Logistics</td>
+              <td>Courier marks package as delivered to customer.</td>
+            </tr>
+            <tr>
+              <td><code>product.updated</code></td>
+              <td>Catalog</td>
+              <td>Product title, media, or pricing changed — sync cache.</td>
+            </tr>
+            <tr>
+              <td><code>inventory.updated</code></td>
+              <td>Catalog</td>
+              <td>Inventory stock count decremented or replenished.</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- BOTTOM NAVIGATION FOOTER -->
+      <div style="margin-top: 40px; padding: 24px; background: var(--color-whisper-gray); border-radius: var(--radius-cards); border: 1px solid var(--color-forest-ink); display: flex; align-items: center; justify-content: space-between; flex-wrap: gap;">
+        <div>
+          <h4 style="font-family: var(--font-bricolage-grotesque); font-size: 1.2rem; font-weight: 800;">Ready to start building?</h4>
+          <p style="font-size: 13px; opacity: 0.75;">Generate your API keys in the Merchant Dashboard.</p>
+        </div>
+        <a href="http://localhost:3000/developer" class="btn-primary">
+          <span>Open Developer Studio →</span>
+        </a>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="copy-toast" id="copy-toast">✔ Copied to clipboard!</div>
+
+  <!-- Docs Script -->
+  <script>
+    function toggleMobileSidebar() {
+      const sb = document.getElementById("docs-sidebar");
+      if (sb) sb.classList.toggle("mobile-open");
+    }
+
+    function switchDocTab(btn, paneId) {
+      const card = btn.closest(".response-card");
+      if (!card) return;
+      card.querySelectorAll(".tab-btn-doc").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      card.querySelectorAll(".tab-pane").forEach(p => p.classList.remove("active"));
+      const target = card.querySelector("#" + paneId);
+      if (target) target.classList.add("active");
+    }
+
+    function copySnippet(elementId) {
+      const el = document.getElementById(elementId);
+      if (!el) return;
+      navigator.clipboard.writeText(el.innerText || el.textContent);
+      showToast("Copied to clipboard!");
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById("copy-toast");
+      if (!t) return;
+      t.innerText = "✔ " + msg;
+      t.style.display = "block";
+      setTimeout(() => { t.style.display = "none"; }, 2500);
+    }
+
+    function filterDocsNav() {
+      const filter = document.getElementById("docs-search-input").value.toLowerCase();
+      const links = document.querySelectorAll(".docs-nav-link");
+      links.forEach(l => {
+        const text = l.textContent.toLowerCase();
+        l.style.display = text.includes(filter) ? "flex" : "none";
+      });
+    }
+
+    // Active Sidebar Spy on Scroll
+    window.addEventListener("scroll", () => {
+      const sections = document.querySelectorAll(".doc-section");
+      let currentId = "";
+      sections.forEach(sec => {
+        const top = sec.offsetTop - 120;
+        if (window.scrollY >= top) {
+          currentId = sec.getAttribute("id");
+        }
+      });
+      if (currentId) {
+        document.querySelectorAll(".docs-nav-link").forEach(link => {
+          link.classList.toggle("active-scroll", link.getAttribute("href") === "#" + currentId);
+        });
+      }
+    });
+  </script>
+
+</body>
+
+</html>
