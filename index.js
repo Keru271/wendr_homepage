@@ -184,4 +184,17 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
   });
+
+  // 6. Dynamic Production Link Rewriter for Cloud Deployments
+  const isLocal = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
+  if (!isLocal) {
+    const protocol = window.location.protocol;
+    const host = window.location.host;
+    document.querySelectorAll("a[href^='http://localhost:3000']").forEach((link) => {
+      const original = link.getAttribute("href") || "";
+      const path = original.replace("http://localhost:3000", "");
+      link.setAttribute("href", `${protocol}//cms.${host.replace(/^www\./, "")}${path}`);
+    });
+  }
 });
+
