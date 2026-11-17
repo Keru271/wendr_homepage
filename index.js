@@ -97,80 +97,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // 4. Interactive Developer API Sandbox
-  const sendBtn = document.getElementById("api-send-btn");
-  const methodSelect = document.getElementById("api-method-select");
-  const endpointInput = document.getElementById("api-endpoint-input");
-  const terminalEl = document.getElementById("api-response-terminal");
-  const presetBtns = document.querySelectorAll(".api-preset-btn");
-
-  presetBtns.forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const url = btn.getAttribute("data-url");
-      const method = btn.getAttribute("data-method") || "GET";
-      if (url && endpointInput) endpointInput.value = url;
-      if (method && methodSelect) methodSelect.value = method;
-    });
-  });
-
-  if (sendBtn && terminalEl && endpointInput) {
-    sendBtn.addEventListener("click", async () => {
-      const url = endpointInput.value.trim();
-      const method = methodSelect ? methodSelect.value : "GET";
-      terminalEl.innerHTML = `<div class="code-comment">// Fetching ${method} ${url}...</div>`;
-
-      try {
-        const res = await fetch(url, { method });
-        if (res.ok) {
-          const json = await res.json();
-          terminalEl.innerHTML = `
-            <div style="color: #4ade80; font-weight: 700; margin-bottom: 8px;">HTTP/1.1 200 OK (${res.headers.get("content-type") || "application/json"})</div>
-            <pre style="line-height: 1.5;"><code class="code-prop">${JSON.stringify(json, null, 2)}</code></pre>
-          `;
-          return;
-        }
-      } catch (err) {
-        // Fallback realistic response if port 5002 is not actively running
-      }
-
-      // Mock output preview if live network fetch fails
-      const mockResult = url.includes("products")
-        ? {
-            status: "success",
-            total: 24,
-            products: [
-              { id: "prod_01", title: "Nova Smart Speaker Pro", price: 189.0, inventory: 45, status: "ACTIVE" },
-              { id: "prod_02", title: "Minimalist Leather Tote", price: 240.0, inventory: 18, status: "ACTIVE" },
-              { id: "prod_03", title: "Wireless ANC Headphones", price: 249.0, inventory: 32, status: "ACTIVE" },
-            ],
-          }
-        : url.includes("collections")
-          ? {
-              status: "success",
-              collections: [
-                { id: "col_01", name: "Summer Drops 2026", slug: "summer-2026", productCount: 14 },
-                { id: "col_02", name: "Featured Catalog", slug: "featured", productCount: 28 },
-              ],
-            }
-          : {
-              status: "success",
-              store: {
-                id: "store_nova",
-                name: "Nova Horizon Goods",
-                currency: "USD",
-                status: "ACTIVE",
-                theme: "default",
-              },
-            };
-
-      terminalEl.innerHTML = `
-        <div style="color: var(--accent); font-weight: 700; margin-bottom: 8px;">HTTP/1.1 200 OK • FASTIFY DEVELOPER API (/api/v1)</div>
-        <pre style="line-height: 1.5;"><code class="code-prop">${JSON.stringify(mockResult, null, 2)}</code></pre>
-      `;
-    });
-  }
-
-  // 5. Interactive FAQ Accordion
+  // 4. Interactive FAQ Accordion
   const faqItems = document.querySelectorAll(".faq-item");
   faqItems.forEach((item) => {
     const question = item.querySelector(".faq-question");
@@ -185,7 +112,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // 6. Dynamic Production Link Rewriter for Cloud Deployments
+  // 5. Dynamic Production Link Rewriter for Cloud Deployments
   const isLocal = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
   if (!isLocal) {
     const protocol = window.location.protocol;
